@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Tab Folders</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="logo">📁 New Tab Folders</span>
+        </div>
+        <div class="topbar-center" id="searchWrapper" style="display:none">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search links...">
+                <button class="search-close-btn" id="searchCloseBtn">✕</button>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="pro-badge" id="proBadge">FREE</span>
+            <button class="icon-btn" id="searchBtn" title="Search">🔍</button>
+            <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+            <button class="upgrade-btn" id="upgradeBtn">👑 Upgrade to PRO</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="folders-grid" id="foldersGrid">
+            <!-- Populated by JS -->
+        </div>
+    </main>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Add / Edit Link Modal -->
+    <div class="modal-overlay" id="addLinkModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3 id="addLinkModalTitle">Add Link</h3>
+                <button class="modal-close" data-close="addLinkModal">✕</button>
+            </div>
+            <form id="addLinkForm" novalidate>
+                <div class="form-group">
+                    <label for="linkTitle">Title</label>
+                    <input type="text" id="linkTitle" placeholder="e.g. GitHub" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label for="linkUrl">URL</label>
+                    <input type="text" id="linkUrl" placeholder="https://..." autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label for="linkIcon">Icon <span class="label-hint">(emoji)</span></label>
+                    <input type="text" id="linkIcon" placeholder="🔗" maxlength="2">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" data-close="addLinkModal">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Link</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Premium / Upgrade Modal -->
+    <div class="modal-overlay" id="premiumModal">
+        <div class="modal modal-lg">
+            <button class="modal-close" data-close="premiumModal">✕</button>
+            <div class="premium-modal-header">
+                <h2>👑 Upgrade to PRO</h2>
+                <p>Unlock unlimited folders, custom themes, and cloud sync</p>
+            </div>
+            <div class="pricing-cards">
+                <div class="pricing-card" data-plan="monthly">
+                    <h3>Monthly</h3>
+                    <div class="price">$4.99<span>/month</span></div>
+                    <ul class="pricing-features">
+                        <li>✅ Unlimited folders</li>
+                        <li>✅ Custom themes</li>
+                        <li>✅ Cloud sync</li>
+                        <li>✅ Priority support</li>
+                        <li>✅ No ads, forever</li>
+                    </ul>
+                    <button class="pricing-btn">Subscribe Monthly</button>
+                </div>
+                <div class="pricing-card popular" data-plan="yearly">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <h3>Yearly</h3>
+                    <div class="price">$39.99<span>/year</span></div>
+                    <div class="savings">Save 33%</div>
+                    <ul class="pricing-features">
+                        <li>✅ Everything in Monthly</li>
+                        <li>✅ 2 months FREE</li>
+                        <li>✅ Lifetime updates</li>
+                        <li>✅ Early access to features</li>
+                        <li>✅ Export / Import data</li>
+                    </ul>
+                    <button class="pricing-btn popular-btn">Subscribe Yearly</button>
+                </div>
+                <div class="pricing-card" data-plan="lifetime">
+                    <h3>Lifetime</h3>
+                    <div class="price">$99.99<span> once</span></div>
+                    <ul class="pricing-features">
+                        <li>✅ Pay once, use forever</li>
+                        <li>✅ All PRO features</li>
+                        <li>✅ Lifetime updates</li>
+                        <li>✅ VIP support</li>
+                        <li>✅ Early beta access</li>
+                    </ul>
+                    <button class="pricing-btn">Buy Lifetime</button>
+                </div>
+            </div>
+            <p class="modal-footer-text">💳 Secure payment via Stripe &nbsp;•&nbsp; 30-day money-back guarantee</p>
+            <p class="demo-hint">Developer? Press <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>P</kbd> to activate 7-day PRO demo</p>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3>⚙️ Settings</h3>
+                <button class="modal-close" data-close="settingsModal">✕</button>
+            </div>
+            <div class="settings-section">
+                <h4>Theme</h4>
+                <div class="theme-grid" id="themeGrid">
+                    <button class="theme-btn active" data-theme="dark">🌑 Dark</button>
+                    <button class="theme-btn pro-locked" data-theme="light">☀️ Light <span class="lock-tag">PRO</span></button>
+                    <button class="theme-btn pro-locked" data-theme="cyberpunk">⚡ Cyberpunk <span class="lock-tag">PRO</span></button>
+                    <button class="theme-btn pro-locked" data-theme="nord">🧊 Nord <span class="lock-tag">PRO</span></button>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h4>Data</h4>
+                <div class="settings-actions">
+                    <button class="btn-secondary" id="exportBtn">📤 Export JSON <span class="lock-tag">PRO</span></button>
+                    <button class="btn-secondary" id="importBtn">📥 Import JSON <span class="lock-tag">PRO</span></button>
+                    <input type="file" id="importFile" accept=".json" style="display:none">
+                    <button class="btn-danger" id="clearDataBtn">🗑️ Clear All Data</button>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h4>About</h4>
+                <p class="about-text">New Tab Folders v1.0.0<br>Made with ❤️ by <strong>METHEFOR</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Dialog -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal modal-xs">
+            <h3 id="confirmTitle">Confirm</h3>
+            <p id="confirmMessage" class="confirm-message">Are you sure?</p>
+            <div class="form-actions">
+                <button class="btn-secondary" id="confirmCancel">Cancel</button>
+                <button class="btn-danger" id="confirmOk">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

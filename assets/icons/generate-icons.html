@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Icons — New Tab Folders</title>
+    <style>
+        body { font-family: sans-serif; padding: 32px; background: #111; color: #eee; }
+        h2 { margin-bottom: 24px; }
+        .row { display: flex; gap: 24px; align-items: center; margin-bottom: 16px; }
+        canvas { border: 1px solid #333; border-radius: 6px; }
+        a { color: #fbbf24; font-size: 14px; }
+        p { color: #888; font-size: 13px; margin-top: 24px; }
+    </style>
+</head>
+<body>
+    <h2>📁 New Tab Folders — Icon Generator</h2>
+    <p>Right-click each image and save as the filename shown, inside <code>assets/icons/</code></p>
+
+    <div id="icons"></div>
+
+    <script>
+        const sizes = [16, 48, 128];
+
+        sizes.forEach(size => {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            const grad = ctx.createLinearGradient(0, 0, size, size);
+            grad.addColorStop(0, '#1a1a2e');
+            grad.addColorStop(1, '#0f0f0f');
+            ctx.fillStyle = grad;
+            ctx.roundRect(0, 0, size, size, size * 0.15);
+            ctx.fill();
+
+            // Folder shape
+            const pad = size * 0.12;
+            const tabW = size * 0.35;
+            const tabH = size * 0.1;
+            const bodyY = size * 0.28;
+            const bodyH = size * 0.52;
+
+            ctx.fillStyle = '#fbbf24';
+
+            // Tab
+            ctx.beginPath();
+            ctx.roundRect(pad, bodyY - tabH, tabW, tabH + 4, 2);
+            ctx.fill();
+
+            // Body
+            ctx.beginPath();
+            ctx.roundRect(pad, bodyY, size - pad * 2, bodyH, size * 0.06);
+            ctx.fill();
+
+            // Inner highlight
+            ctx.fillStyle = 'rgba(255,255,255,0.12)';
+            ctx.beginPath();
+            ctx.roundRect(pad + size * 0.06, bodyY + size * 0.06, (size - pad * 2) * 0.55, size * 0.08, 2);
+            ctx.fill();
+
+            const row = document.createElement('div');
+            row.className = 'row';
+
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL('image/png');
+            img.width = size;
+            img.height = size;
+
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `icon${size}.png`;
+            link.textContent = `⬇ Download icon${size}.png`;
+
+            row.appendChild(canvas);
+            row.appendChild(link);
+            document.getElementById('icons').appendChild(row);
+        });
+    </script>
+</body>
+</html>
