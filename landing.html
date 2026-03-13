@@ -1704,13 +1704,20 @@ document.getElementById('faqList').addEventListener('click', (e) => {
 });
 
 // ---- CTA scroll ----
+const CHROME_STORE_URL = "#"; // TODO: Replace with your Chrome Web Store URL
 function scrollToInstall() {
-    alert('New Tab Folders will be available on Chrome Web Store soon!\n\nFor now, load it manually:\n1. Open chrome://extensions/\n2. Enable Developer mode\n3. Click "Load unpacked"\n4. Select the New Tab Folders folder');
+    // Once published, this will link to the Chrome Web Store.
+    // For now, it can show an alert or scroll to the top.
+    window.open(CHROME_STORE_URL, '_blank');
+    // As an alternative before launch:
+    // alert('Coming Soon to the Chrome Web Store!');
 }
 
 // ---- Subscribe ----
 function handleSubscribe(plan) {
-    alert(`Thanks for your interest in ${plan === 'lifetime' ? 'Lifetime' : 'PRO'}!\n\nStripe checkout is coming soon.\n\nFor now: install the extension and press Shift+Alt+P for a free 7-day PRO demo.`);
+    // Scrolls to the pricing section as Stripe checkout is not yet implemented.
+    document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+    console.log(`User interested in '${plan}' plan. Scrolled to pricing.`);
 }
 </script>
 </body>

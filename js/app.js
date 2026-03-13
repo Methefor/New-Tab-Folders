@@ -29,29 +29,43 @@ const Storage = {
 // ---------- Default Data ----------
 const DEFAULT_FOLDERS = [
     {
-        id: 'f1', name: 'Work', emoji: '💼',
+        id: 'f1', name: 'Comfort Zone', color: 'red',
         links: [
-            { id: 'l1', title: 'GitHub', url: 'https://github.com', icon: '🐙' },
-            { id: 'l2', title: 'Claude AI', url: 'https://claude.ai', icon: '🤖' }
+            { id: 'l1', title: 'YouTube', url: 'https://www.youtube.com', icon: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=128' },
+            { id: 'l2', title: 'YouTube Music', url: 'https://music.youtube.com', icon: 'https://www.google.com/s2/favicons?domain=music.youtube.com&sz=128' },
+            { id: 'l3', title: 'Netflix', url: 'https://www.netflix.com/browse', icon: 'https://www.google.com/s2/favicons?domain=netflix.com&sz=128' },
+            { id: 'l4', title: 'Disney+', url: 'https://www.disneyplus.com', icon: 'https://www.google.com/s2/favicons?domain=disneyplus.com&sz=128' },
+            { id: 'l5', title: 'Steam', url: 'https://store.steampowered.com', icon: 'https://www.google.com/s2/favicons?domain=steampowered.com&sz=128' }
         ]
     },
     {
-        id: 'f2', name: 'Entertainment', emoji: '🎬',
+        id: 'f2', name: 'Ai Tools', color: 'blue',
         links: [
-            { id: 'l3', title: 'YouTube', url: 'https://youtube.com', icon: '🎥' },
-            { id: 'l4', title: 'Netflix', url: 'https://netflix.com', icon: '📺' }
+            { id: 'h1', title: 'Works', type: 'header' },
+            { id: 'l6', title: 'GitHub', url: 'https://github.com', icon: 'https://www.google.com/s2/favicons?domain=github.com&sz=128' },
+            { id: 'l7', title: 'NoteBookLM', url: 'https://notebooklm.google.com', icon: 'https://www.google.com/s2/favicons?domain=notebooklm.google.com&sz=128' },
+            { id: 'l8', title: 'Notion', url: 'https://www.notion.so', icon: 'https://www.google.com/s2/favicons?domain=notion.so&sz=128' },
+            { id: 'h2', title: 'Ai Chat', type: 'header' },
+            { id: 'l9', title: 'Claude', url: 'https://claude.ai', icon: 'https://www.google.com/s2/favicons?domain=claude.ai&sz=128' },
+            { id: 'l10', title: 'Gemini', url: 'https://gemini.google.com', icon: 'https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128' },
+            { id: 'l11', title: 'DeepSeek', url: 'https://chat.deepseek.com', icon: 'https://www.google.com/s2/favicons?domain=chat.deepseek.com&sz=128' },
+            { id: 'l12', title: 'Grok', url: 'https://grok.x.ai', icon: 'https://www.google.com/s2/favicons?domain=grok.x.ai&sz=128' },
+            { id: 'h3', title: 'DataBase', type: 'header' },
+            { id: 'l13', title: 'Supabase', url: 'https://supabase.com', icon: 'https://www.google.com/s2/favicons?domain=supabase.com&sz=128' },
+            { id: 'l14', title: 'Firecrawl', url: 'https://firecrawl.dev', icon: 'https://www.google.com/s2/favicons?domain=firecrawl.dev&sz=128' }
         ]
     },
     {
-        id: 'f3', name: 'Learning', emoji: '📚',
+        id: 'f3', name: 'Projects', color: 'green',
         links: [
-            { id: 'l5', title: 'Udemy', url: 'https://udemy.com', icon: '🎓' },
-            { id: 'l6', title: 'MDN Docs', url: 'https://developer.mozilla.org', icon: '📖' }
+            { id: 'l15', title: 'My Portfolio', url: '#', icon: '📁' }
         ]
     }
 ];
 
 const FREE_FOLDER_LIMIT = 3;
+
+// TRANSLATIONS constant is now loaded from js/translations.js
 
 // ---------- App State ----------
 const App = {
@@ -59,29 +73,151 @@ const App = {
         folders: [],
         isPro: false,
         proExpiresAt: null,
-        theme: 'dark'
+        theme: 'dark',
+        tutorialCompleted: false,
+        sidebarCollapsed: false,
+        tabsSortOrder: 'recent',
+        language: 'TR'
     },
     _editingFolderId: null,
     _editingLinkId: null,
     _pendingAction: null, // for confirm dialog
 
+    t(key, params = {}) {
+        const lang = this.data.language || 'TR';
+        let str = TRANSLATIONS[lang]?.[key] || TRANSLATIONS['EN']?.[key] || key;
+        Object.entries(params).forEach(([k, v]) => {
+            str = str.replace(`{${k}}`, v);
+        });
+        return str;
+    },
+
+    updateStaticI18n() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = this.t(key);
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.dataset.i18nPlaceholder;
+            el.placeholder = this.t(key);
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach(el => {
+            const key = el.dataset.i18nTitle;
+            el.title = this.t(key);
+        });
+    },
+
     async init() {
         await this.load();
         this.applyTheme(this.data.theme);
+        this.updateStaticI18n();
+        if (this.data.sidebarCollapsed) {
+            document.getElementById('sidebar')?.classList.add('collapsed');
+        }
         this.render();
         this.bindEvents();
         this.updateProUI();
         this.checkProExpiry();
         this.createToastContainer();
+        this.fetchTabs();
+        
+        if (!this.data.tutorialCompleted) {
+            this.openModal('tutorialModal');
+            document.getElementById('tutorialStep1')?.classList.remove('hidden');
+            document.getElementById('tutorialStep2')?.classList.add('hidden');
+        }
+    },
+
+    // ---------- Tabs API ----------
+    async fetchTabs() {
+        if (typeof chrome !== 'undefined' && chrome.tabs) {
+            chrome.tabs.query({}, (tabs) => {
+                const list = document.getElementById('openTabsList');
+                const count = document.getElementById('openTabsCount');
+                if (!list) return;
+
+                let sortedTabs = [...tabs];
+                const sortOrder = this.data.tabsSortOrder || 'recent';
+                
+                if (sortOrder === 'recent') {
+                    sortedTabs.sort((a,b) => (b.id || 0) - (a.id || 0));
+                } else if (sortOrder === 'position') {
+                    sortedTabs.sort((a,b) => {
+                        if (a.windowId !== b.windowId) return a.windowId - b.windowId;
+                        return a.index - b.index;
+                    });
+                } else if (sortOrder === 'reverse') {
+                    sortedTabs.sort((a,b) => {
+                        if (a.windowId !== b.windowId) return b.windowId - a.windowId;
+                        return b.index - a.index;
+                    });
+                }
+                
+                list.innerHTML = sortedTabs.map(t => {
+                    const iconUrl = t.favIconUrl || 'https://www.google.com/s2/favicons?domain=' + new URL(t.url).hostname + '&sz=128';
+                    return `<div class="tab-item" draggable="true" data-tab-id="${t.id}" title="${this._esc(t.title)}" data-url="${this._esc(t.url)}" data-icon="${iconUrl}" data-title="${this._esc(t.title)}">
+                        <img src="${iconUrl}" class="tab-icon" onerror="this.src='assets/icons/icon16.png'">
+                        <span class="tab-title">${this._esc(t.title)}</span>
+                        <div class="tab-actions">
+                            <button class="tab-action-icon" data-action="add-tab-link" data-url="${this._esc(t.url)}" data-title="${this._esc(t.title)}" data-icon="${iconUrl}" title="Add to folder">➕</button>
+                            <button class="tab-close" data-action="close-tab" data-tab-id="${t.id}" title="Close tab">✕</button>
+                        </div>
+                    </div>`;
+                }).join('');
+                if (tabs.length === 0) {
+                    list.innerHTML = `<div class="empty-state">${this.t('no_recently_closed')}</div>`; 
+                    return;
+                }
+                if (count) count.textContent = this.t('tabs_count', { n: tabs.length });
+            });
+        }
+        
+        if (typeof chrome !== 'undefined' && chrome.sessions) {
+            chrome.sessions.getRecentlyClosed({ maxResults: 10 }, (sessions) => {
+                const list = document.getElementById('closedTabsList');
+                if (!list) return;
+                
+                let recentTabs = [];
+                sessions.forEach(s => {
+                    if (s.tab) recentTabs.push(s.tab);
+                    if (s.window && s.window.tabs) {
+                        recentTabs = recentTabs.concat(s.window.tabs);
+                    }
+                });
+                recentTabs = recentTabs.slice(0, 15);
+                
+                if (recentTabs.length === 0) {
+                    list.innerHTML = `<div class="empty-state">${this.t('no_recently_closed')}</div>`;
+                    return;
+                }
+
+                list.innerHTML = recentTabs.map(t => {
+                    let iconUrl = t.favIconUrl;
+                    if (!iconUrl) {
+                        try {
+                            iconUrl = 'https://www.google.com/s2/favicons?domain=' + new URL(t.url).hostname + '&sz=128';
+                        } catch {
+                            iconUrl = 'assets/icons/icon16.png';
+                        }
+                    }
+                    return `<div class="tab-item" data-action="restore-tab" data-session-id="${t.sessionId}" title="${this._esc(t.title)}">
+                        <img src="${iconUrl}" class="tab-icon" onerror="this.src='assets/icons/icon16.png'">
+                        <span class="tab-title">${this._esc(t.title)}</span>
+                    </div>`;
+                }).join('');
+            });
+        }
     },
 
     // ---------- Persistence ----------
     async load() {
-        const stored = await Storage.get(['ntf_data']);
-        if (stored.ntf_data) {
+        const stored = await Storage.get(['ntf_data', 'app_version']);
+        // Force update defaults if we are missing the new structure
+        if (stored.ntf_data && stored.app_version === '1.2') {
             this.data = { ...this.data, ...stored.ntf_data };
         } else {
             this.data.folders = JSON.parse(JSON.stringify(DEFAULT_FOLDERS));
+            await Storage.set({ app_version: '1.2' });
             await this.save();
         }
     },
@@ -127,13 +263,21 @@ const App = {
         const badge = document.getElementById('proBadge');
         const upgradeBtn = document.getElementById('upgradeBtn');
         if (this.isPro) {
-            badge.textContent = 'PRO';
-            badge.classList.add('is-pro');
-            upgradeBtn.classList.add('hidden');
+            if (badge) {
+                badge.textContent = 'PRO';
+                badge.classList.add('is-pro');
+            }
+            if (upgradeBtn) {
+                upgradeBtn.classList.add('hidden');
+            }
         } else {
-            badge.textContent = 'FREE';
-            badge.classList.remove('is-pro');
-            upgradeBtn.classList.remove('hidden');
+            if (badge) {
+                badge.textContent = 'Pro only';
+                badge.classList.remove('is-pro');
+            }
+            if (upgradeBtn) {
+                upgradeBtn.classList.remove('hidden');
+            }
         }
     },
 
@@ -158,12 +302,14 @@ const App = {
             return;
         }
 
-        if (folders.length === 0) {
+        if (this.data.folders.length === 0) {
             grid.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-icon">📭</div>
-                    <p>No folders yet. Click the button below to create one!</p>
-                </div>`;
+                <div class="empty-state-large">
+                    <h3>${this.t('search_no_results')}</h3>
+                    <p>${this.t('add_new_space')}</p>
+                </div>
+            `;
+            return;
         }
 
         folders.forEach(folder => {
@@ -175,22 +321,21 @@ const App = {
 
     _buildFolderCard(folder) {
         const card = document.createElement('div');
-        card.className = 'folder-card';
+        card.className = 'folder-card group-card';
         card.dataset.folderId = folder.id;
+        if (folder.color) card.dataset.color = folder.color;
 
         card.innerHTML = `
             <div class="folder-header">
-                <span class="folder-emoji">${folder.emoji || '📁'}</span>
                 <input type="text" class="folder-title-input" value="${this._esc(folder.name)}" title="Click to rename" readonly>
                 <div class="folder-actions">
-                    <button class="folder-action-btn" data-action="edit-emoji" title="Change icon">🎨</button>
-                    <button class="folder-action-btn delete-btn" data-action="delete-folder" title="Delete folder">🗑️</button>
+                    <button class="folder-action-btn" data-action="open-folder-context" title="Options">•••</button>
                 </div>
             </div>
             <div class="links-container" id="links-${folder.id}">
                 ${folder.links.map(link => this._buildLinkHTML(link, folder.id)).join('')}
-                <button class="add-link-btn" data-action="add-link" data-folder-id="${folder.id}">
-                    <span>＋</span> Add Link
+                <button class="add-link-btn" data-action="open-folder-context" data-folder-id="${folder.id}">
+                    <span>＋</span> Click to add
                 </button>
             </div>`;
 
@@ -198,28 +343,55 @@ const App = {
     },
 
     _buildLinkHTML(link, folderId) {
+        if (link.type === 'header') {
+            return `<div class="link-header-item">
+                <span>${this._esc(link.title)}</span>
+                <div class="link-actions">
+                    <button class="link-edit-btn" data-action="edit-link" data-link-id="${link.id}" data-folder-id="${folderId}" title="Edit header">✏️</button>
+                    <button class="link-delete-btn" data-action="delete-link" data-link-id="${link.id}" data-folder-id="${folderId}" title="Remove header">✕</button>
+                </div>
+            </div>`;
+        }
+    
+        // Fallback or explicit resolution
+        let iconHtml = '';
+        if (link.icon && link.icon.length <= 2) {
+            iconHtml = `<span class="link-icon emoji-icon">${link.icon}</span>`;
+        } else if (link.icon) {
+            iconHtml = `<img class="link-icon" src="${link.icon}" style="width:20px; height:20px; object-fit:contain; border-radius:4px;">`;
+        } else {
+            // Auto-fetch if no icon
+            try {
+                const domain = new URL(link.url).hostname;
+                iconHtml = `<img class="link-icon" src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" style="width:20px; height:20px; object-fit:contain; border-radius:4px;">`;
+            } catch {
+                iconHtml = `<img class="link-icon" src="assets/icons/icon16.png" style="width:20px; height:20px; object-fit:contain; border-radius:4px;">`;
+            }
+        }
+            
         return `
             <a href="${this._esc(link.url)}" class="link-item" target="_blank" rel="noopener noreferrer"
                data-link-id="${link.id}" data-folder-id="${folderId}">
-                <span class="link-icon">${link.icon || '🔗'}</span>
+                ${iconHtml}
                 <span class="link-text" title="${this._esc(link.title)}">${this._esc(link.title)}</span>
-                <button class="link-delete-btn" data-action="delete-link"
-                        data-link-id="${link.id}" data-folder-id="${folderId}" title="Remove link">✕</button>
+                <div class="link-actions">
+                    <button class="link-edit-btn" data-action="edit-link" data-link-id="${link.id}" data-folder-id="${folderId}" title="Edit link">✏️</button>
+                    <button class="link-delete-btn" data-action="delete-link"
+                            data-link-id="${link.id}" data-folder-id="${folderId}" title="Remove link">✕</button>
+                </div>
             </a>`;
     },
 
     _buildAddFolderCard() {
         const card = document.createElement('div');
-        const canAdd = this.isPro || this.data.folders.length < FREE_FOLDER_LIMIT;
-
-        card.className = 'add-folder-card' + (canAdd ? '' : ' locked-pro');
-        card.dataset.action = canAdd ? 'add-folder' : 'show-premium';
+        card.className = 'folder-card add-folder-card';
         card.innerHTML = `
-            <div class="add-folder-content">
-                <span class="add-folder-icon">${canAdd ? '➕' : '🔒'}</span>
-                <span>${canAdd ? 'New Folder' : 'Unlock More Folders'}</span>
-            </div>`;
-
+            <div class="add-folder-inner">
+                <span class="plus-icon">+</span>
+                <span class="text">${this.t('add_folder')}</span>
+            </div>
+        `;
+        card.addEventListener('click', () => this.addFolder());
         return card;
     },
 
@@ -265,14 +437,14 @@ const App = {
         }
 
         const emojis = ['📁', '⭐', '🎯', '💡', '🔥', '🌍', '🎮', '💼', '📚', '🎨'];
-        const folder = {
-            id: 'f' + Date.now(),
-            name: 'New Folder',
-            emoji: emojis[Math.floor(Math.random() * emojis.length)],
-            links: []
+        const newFolder = {
+            id: 'folder_' + Date.now(),
+            name: this.t('new_folder'),
+            links: [],
+            color: 'blue'
         };
 
-        this.data.folders.push(folder);
+        this.data.folders.push(newFolder);
         this.save();
         this.render();
 
@@ -336,14 +508,26 @@ const App = {
             const folder = this.data.folders.find(f => f.id === folderId);
             const link = folder?.links.find(l => l.id === linkId);
             if (link) {
-                titleEl.textContent = 'Edit Link';
-                titleInput.value = link.title;
-                urlInput.value = link.url;
-                iconInput.value = link.icon || '';
+                if (link.type === 'header') {
+                    titleEl.textContent = 'Edit Header';
+                    titleInput.value = link.title;
+                    urlInput.value = '';
+                    urlInput.disabled = true;
+                    iconInput.disabled = true;
+                } else {
+                    titleEl.textContent = 'Edit Link';
+                    titleInput.value = link.title;
+                    urlInput.value = link.url;
+                    urlInput.disabled = false;
+                    iconInput.disabled = false;
+                    iconInput.value = link.icon || '';
+                }
             }
         } else {
             titleEl.textContent = 'Add Link';
             document.getElementById('addLinkForm').reset();
+            urlInput.disabled = false;
+            iconInput.disabled = false;
         }
 
         this.openModal('addLinkModal');
@@ -355,29 +539,33 @@ const App = {
         const folder = this.data.folders.find(f => f.id === folderId);
         if (!folder) return;
 
-        let url = formData.url.trim();
-        if (url && !url.match(/^https?:\/\//)) url = 'https://' + url;
-
         if (this._editingLinkId) {
             const link = folder.links.find(l => l.id === this._editingLinkId);
             if (link) {
                 link.title = formData.title.trim();
-                link.url = url;
-                link.icon = formData.icon.trim() || '🔗';
+                if (link.type !== 'header') {
+                    let url = formData.url.trim();
+                    if (url && !url.match(/^https?:\/\//)) url = 'https://' + url;
+                    link.url = url;
+                    link.icon = formData.icon.trim() || '';
+                }
             }
         } else {
+            let url = formData.url.trim();
+            if (url && !url.match(/^https?:\/\//)) url = 'https://' + url;
+
             folder.links.push({
                 id: 'l' + Date.now(),
                 title: formData.title.trim(),
                 url: url,
-                icon: formData.icon.trim() || '🔗'
+                icon: formData.icon.trim() || ''
             });
         }
 
         this.save();
         this.closeModal('addLinkModal');
         this.render();
-        this.showToast(this._editingLinkId ? 'Link updated.' : 'Link added.', 'success');
+        this.showToast(this._editingLinkId ? 'Updated.' : 'Link added.', 'success');
     },
 
     deleteLink(folderId, linkId) {
@@ -403,9 +591,9 @@ const App = {
     },
 
     confirm(title, message, okLabel, action) {
-        document.getElementById('confirmTitle').textContent = title;
-        document.getElementById('confirmMessage').textContent = message;
-        document.getElementById('confirmOk').textContent = okLabel || 'Delete';
+        document.getElementById('confirmTitle').textContent = this.t('confirm_title');
+        document.getElementById('confirmMessage').textContent = this.t('confirm_msg');
+        document.getElementById('confirmOk').textContent = this.t('delete');
         this._pendingAction = action;
         this.openModal('confirmModal');
     },
@@ -519,42 +707,141 @@ const App = {
                 this._handleAction(actionEl, e);
                 return;
             }
-
-            // Link item click — don't interfere
         });
+
+        // ---------- Drag and Drop Logic ----------
+        const openTabsList = document.getElementById('openTabsList');
+        if (openTabsList) {
+            openTabsList.addEventListener('dragstart', (e) => {
+                const tabItem = e.target.closest('.tab-item');
+                if (tabItem) {
+                    const data = {
+                        action: 'add-tab',
+                        title: tabItem.dataset.title,
+                        url: tabItem.dataset.url,
+                        icon: tabItem.dataset.icon
+                    };
+                    e.dataTransfer.setData('application/json', JSON.stringify(data));
+                    e.dataTransfer.effectAllowed = 'copy';
+                }
+            });
+        }
+
+        const foldersGrid = document.getElementById('foldersGrid');
+        if (foldersGrid) {
+            foldersGrid.addEventListener('dragover', (e) => {
+                const folderCard = e.target.closest('.folder-card');
+                if (folderCard) {
+                    e.preventDefault(); // allow drop
+                    folderCard.classList.add('is-drag-over');
+                }
+            });
+            foldersGrid.addEventListener('dragleave', (e) => {
+                const folderCard = e.target.closest('.folder-card');
+                if (folderCard && e.relatedTarget && !folderCard.contains(e.relatedTarget)) {
+                    folderCard.classList.remove('is-drag-over');
+                }
+            });
+            foldersGrid.addEventListener('drop', (e) => {
+                const folderCard = e.target.closest('.folder-card');
+                if (folderCard) {
+                    e.preventDefault();
+                    folderCard.classList.remove('is-drag-over');
+                    const tabDataAttr = e.dataTransfer.getData('application/json');
+                    if (tabDataAttr) {
+                        try {
+                            const tabData = JSON.parse(tabDataAttr);
+                            if (tabData.action === 'add-tab') {
+                                const folderId = folderCard.dataset.folderId;
+                                const linkId = 'link_' + Date.now();
+                                
+                                const folder = this.data.folders.find(f => f.id === folderId);
+                                if (folder) {
+                                    folder.links.push({
+                                        id: linkId,
+                                        title: tabData.title,
+                                        url: tabData.url,
+                                        icon: tabData.icon,
+                                        createdAt: Date.now()
+                                    });
+                                    this.save();
+                                    this.render();
+                                    this.showToast('Tab saved to folder!', 'success');
+                                }
+                            }
+                        } catch(err) { console.error('Drag drop error', err); }
+                    }
+                }
+            });
+        }
+        // -----------------------------------------
 
         // Search input
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            this.render(e.target.value);
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.render(e.target.value);
+            });
+        }
+
+        // Dropdown toggle logic
+        document.querySelectorAll('.dropdown-wrapper').forEach(wrapper => {
+            const btn = wrapper.querySelector('button');
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close others
+                    document.querySelectorAll('.dropdown-wrapper').forEach(w => {
+                        if (w !== wrapper) w.classList.remove('active');
+                    });
+                    wrapper.classList.toggle('active');
+                });
+            }
         });
 
-        document.getElementById('searchCloseBtn').addEventListener('click', () => {
-            this.toggleSearch();
+        // Close dropdowns on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.dropdown-wrapper').forEach(w => {
+                    w.classList.remove('active');
+                });
+            }
         });
 
-        document.getElementById('searchBtn').addEventListener('click', () => {
-            this.toggleSearch();
-        });
-
-        // Upgrade button
-        document.getElementById('upgradeBtn').addEventListener('click', () => {
+        // Dropdown actions
+        document.getElementById('headerUpgradeBtn')?.addEventListener('click', () => {
             this.showPremiumModal();
         });
 
-        // Settings button
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            this.openModal('settingsModal');
+        document.getElementById('dropdownExportBtn')?.addEventListener('click', () => {
+            this.exportData();
+        });
+
+        document.getElementById('dropdownImportBtn')?.addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+
+        // Toggle switches in settings menu (visual only, for now)
+        document.querySelectorAll('.toggle-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const switchEl = item.querySelector('.toggle-switch');
+                if (switchEl) switchEl.classList.toggle('active');
+            });
         });
 
         // Add Link Form submit
-        document.getElementById('addLinkForm').addEventListener('submit', (e) => {
+        document.getElementById('addLinkForm')?.addEventListener('submit', (e) => {
             e.preventDefault();
             const titleVal = document.getElementById('linkTitle').value;
-            const urlVal = document.getElementById('linkUrl').value;
-            if (!titleVal.trim() || !urlVal.trim()) return;
+            const urlInput = document.getElementById('linkUrl');
+            
+            // Allow empty URL ONLY if the current editing item is a header type (it disables the input)
+            if (!titleVal.trim() || (!urlInput.value.trim() && !urlInput.disabled)) return;
+            
             this.saveLink({
                 title: titleVal,
-                url: urlVal,
+                url: urlInput.value,
                 icon: document.getElementById('linkIcon').value
             });
         });
@@ -568,7 +855,7 @@ const App = {
         });
 
         // Settings: Theme buttons
-        document.getElementById('themeGrid').addEventListener('click', (e) => {
+        document.getElementById('themeGrid')?.addEventListener('click', (e) => {
             const btn = e.target.closest('.theme-btn');
             if (!btn || btn.classList.contains('pro-locked')) {
                 if (btn?.classList.contains('pro-locked')) {
@@ -582,23 +869,23 @@ const App = {
         });
 
         // Settings: Export
-        document.getElementById('exportBtn').addEventListener('click', () => {
+        document.getElementById('exportBtn')?.addEventListener('click', () => {
             this.exportData();
         });
 
         // Settings: Import
-        document.getElementById('importBtn').addEventListener('click', () => {
+        document.getElementById('importBtn')?.addEventListener('click', () => {
             if (!this.isPro) { this.closeModal('settingsModal'); this.showPremiumModal(); return; }
-            document.getElementById('importFile').click();
+            document.getElementById('importFile')?.click();
         });
 
-        document.getElementById('importFile').addEventListener('change', (e) => {
+        document.getElementById('importFile')?.addEventListener('change', (e) => {
             if (e.target.files[0]) this.importData(e.target.files[0]);
             e.target.value = '';
         });
 
         // Settings: Clear Data
-        document.getElementById('clearDataBtn').addEventListener('click', () => {
+        document.getElementById('clearDataBtn')?.addEventListener('click', () => {
             this.confirm(
                 'Clear All Data',
                 'This will delete all your folders and links. Are you sure?',
@@ -607,8 +894,174 @@ const App = {
             );
         });
 
+        // Sidebar Toggle
+        document.getElementById('sidebarToggleBtn')?.addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('collapsed');
+                this.data.sidebarCollapsed = sidebar.classList.contains('collapsed');
+                this.save();
+            }
+        });
+
+        // Toggle Closed Tabs (Eye Icon switch)
+        document.getElementById('toggleClosedTabsBtn')?.addEventListener('click', () => {
+            const list = document.getElementById('closedTabsList');
+            const iconBtn = document.getElementById('closedTabsIcon');
+            if (list) {
+                list.classList.toggle('hidden');
+                const isHidden = list.classList.contains('hidden');
+                if (iconBtn) {
+                    const eyeOpen = iconBtn.querySelector('.eye-open');
+                    const eyeClosed = iconBtn.querySelector('.eye-closed');
+                    if (eyeOpen) eyeOpen.style.display = isHidden ? 'none' : 'block';
+                    if (eyeClosed) eyeClosed.style.display = isHidden ? 'block' : 'none';
+                }
+            }
+        });
+
+        // Tabs Sort Menu Options
+        document.querySelectorAll('#sortTabsMenu .dropdown-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.data.tabsSortOrder = btn.dataset.sort;
+                
+                document.querySelectorAll('#sortTabsMenu .dropdown-item').forEach(b => {
+                    b.classList.remove('active');
+                    const span = b.querySelector('.check-icon');
+                    if(span) span.style.visibility = b === btn ? 'visible' : 'hidden';
+                });
+                btn.classList.add('active');
+                
+                this.save();
+                this.fetchTabs();
+                document.getElementById('sortTabsMenu')?.parentElement.classList.remove('active');
+            });
+        });
+
+        // Initialize sort UI state based on loaded data
+        const currentSort = this.data.tabsSortOrder || 'recent';
+        document.querySelectorAll('#sortTabsMenu .dropdown-item').forEach(b => {
+            b.classList.toggle('active', b.dataset.sort === currentSort);
+            const span = b.querySelector('.check-icon');
+            if (span) span.style.visibility = b.dataset.sort === currentSort ? 'visible' : 'hidden';
+        });
+
+        // Main Context Menu on Right Click empty folders space
+        const scrollArea = document.querySelector('.content-scroll');
+        if (scrollArea) {
+            scrollArea.addEventListener('contextmenu', (e) => {
+                if (e.target.closest('.folder-card') || e.target.closest('.context-modal')) {
+                    return;
+                }
+                e.preventDefault();
+                const modal = document.getElementById('mainContextModal');
+                const modalContent = modal?.querySelector('.modal');
+                if (modal && modalContent) {
+                    modal.classList.add('open');
+                    
+                    const x = e.clientX;
+                    const y = e.clientY;
+                    modalContent.style.left = `${x}px`;
+                    modalContent.style.top = `${y}px`;
+                    modalContent.style.margin = '0';
+                    modalContent.style.position = 'absolute';
+                    modalContent.style.transform = 'none';
+                    
+                    const rect = modalContent.getBoundingClientRect();
+                    if (x + rect.width > window.innerWidth) modalContent.style.left = `${window.innerWidth - rect.width - 10}px`;
+                    if (y + rect.height > window.innerHeight) modalContent.style.top = `${window.innerHeight - rect.height - 10}px`;
+                }
+            });
+        }
+        
+        // Main Context Menu Actions
+        document.getElementById('ctxMainPaste')?.addEventListener('click', () => {
+            this.showToast('Paste feature requires Clipboard API permissions.', 'info');
+            this.closeModal('mainContextModal');
+        });
+        
+        document.getElementById('ctxMainAddNote')?.addEventListener('click', () => {
+            this.showToast('Adding custom notes coming soon!', 'info');
+            this.closeModal('mainContextModal');
+        });
+        
+        document.getElementById('ctxMainAddFolder')?.addEventListener('click', () => {
+            this.addFolder();
+            this.closeModal('mainContextModal');
+        });
+
+        // Language Dropdown Logic
+        document.querySelectorAll('#languageMenu .dropdown-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                this.data.language = lang;
+                
+                document.querySelectorAll('#languageMenu .dropdown-item').forEach(item => {
+                    const check = item.querySelector('.check-icon');
+                    if (check) check.style.visibility = item.dataset.lang === lang ? 'visible' : 'hidden';
+                });
+                
+                this.updateStaticI18n();
+                this.render();
+                this.fetchTabs();
+                this.save();
+                // Silent change - no toast
+                // Close the dropdown
+                btn.closest('.dropdown-wrapper').classList.remove('active');
+            });
+        });
+
+        // Initialize Language UI
+        const currentLang = this.data.language || 'TR';
+        document.querySelectorAll('#languageMenu .dropdown-item').forEach(item => {
+            const check = item.querySelector('.check-icon');
+            if (check) check.style.visibility = item.dataset.lang === currentLang ? 'visible' : 'hidden';
+        });
+
+        // Tutorial Logic
+        document.getElementById('retakeTutorialBtn')?.addEventListener('click', () => {
+            this.openModal('tutorialModal');
+            document.getElementById('tutorialStep1')?.classList.remove('hidden');
+            document.getElementById('tutorialStep2')?.classList.add('hidden');
+        });
+        
+        document.getElementById('tutorialNextBtn')?.addEventListener('click', () => {
+            document.getElementById('tutorialStep1')?.classList.add('hidden');
+            document.getElementById('tutorialStep2')?.classList.remove('hidden');
+        });
+        
+        document.getElementById('tutorialPrevBtn')?.addEventListener('click', () => {
+            document.getElementById('tutorialStep2')?.classList.add('hidden');
+            document.getElementById('tutorialStep1')?.classList.remove('hidden');
+        });
+        
+        document.getElementById('tutorialFinishBtn')?.addEventListener('click', () => {
+            this.data.tutorialCompleted = true;
+            this.save();
+            this.closeModal('tutorialModal');
+        });
+        
+        document.getElementById('tutorialImportBtn')?.addEventListener('click', () => {
+            document.getElementById('importFile')?.click();
+            this.data.tutorialCompleted = true;
+            this.save();
+            this.closeModal('tutorialModal');
+        });
+        
+        document.querySelectorAll('.tutorial-theme-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tutorial-theme-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const theme = btn.dataset.setTheme;
+                const finalTheme = theme === 'auto' ? 'dark' : theme;
+                this.applyTheme(finalTheme);
+                this.data.theme = finalTheme;
+                this.save();
+            });
+        });
+
         // Confirm dialog
-        document.getElementById('confirmOk').addEventListener('click', () => {
+        document.getElementById('confirmOk')?.addEventListener('click', () => {
             if (this._pendingAction) {
                 this._pendingAction();
                 this._pendingAction = null;
@@ -616,7 +1069,7 @@ const App = {
             this.closeModal('confirmModal');
         });
 
-        document.getElementById('confirmCancel').addEventListener('click', () => {
+        document.getElementById('confirmCancel')?.addEventListener('click', () => {
             this._pendingAction = null;
             this.closeModal('confirmModal');
         });
@@ -642,6 +1095,136 @@ const App = {
             const card = input.closest('.folder-card');
             if (!card) return;
             this._startEditTitle(input, card.dataset.folderId);
+        });
+        
+        // --- Sidebar Toggles ---
+        const toggleClosedBtn = document.getElementById('toggleClosedTabsBtn');
+        if (toggleClosedBtn) {
+            toggleClosedBtn.addEventListener('click', () => {
+                const list = document.getElementById('closedTabsList');
+                if (list) list.classList.toggle('hidden');
+            });
+        }
+        
+        const newTabBtn = document.getElementById('newTabBtn');
+        if (newTabBtn && typeof chrome !== 'undefined' && chrome.tabs) {
+            newTabBtn.addEventListener('click', () => chrome.tabs.create({}));
+        }
+
+        // --- Sidebar Utilities ---
+        document.getElementById('cleanDupesBtn')?.addEventListener('click', () => {
+            if (typeof chrome !== 'undefined' && chrome.tabs) {
+                chrome.tabs.query({ currentWindow: true }, (tabs) => {
+                    const seen = new Set();
+                    const dupes = [];
+                    tabs.forEach(t => {
+                        if (seen.has(t.url)) dupes.push(t.id);
+                        else seen.add(t.url);
+                    });
+                    if (dupes.length) chrome.tabs.remove(dupes, () => this.fetchTabs());
+                });
+            }
+        });
+        
+        document.getElementById('sortTabsBtn')?.addEventListener('click', () => {
+            // Very simple sort by URL logic for demonstration visually in sidebar
+            if (typeof chrome !== 'undefined' && chrome.tabs) {
+                chrome.tabs.query({ currentWindow: true }, (tabs) => {
+                    const sorted = [...tabs].sort((a,b) => a.url.localeCompare(b.url));
+                    sorted.forEach((t, i) => chrome.tabs.move(t.id, { index: i }));
+                    setTimeout(() => this.fetchTabs(), 300);
+                });
+            }
+        });
+
+        // --- Context Menu Handlers ---
+        document.getElementById('ctxAddBookmark')?.addEventListener('click', () => {
+            const fId = document.getElementById('contextFolderId').value;
+            this.closeModal('folderContextModal');
+            this.openAddLinkModal(fId);
+        });
+
+        document.getElementById('ctxAddGroup')?.addEventListener('click', () => {
+            const fId = document.getElementById('contextFolderId').value;
+            this.closeModal('folderContextModal');
+            const folder = this.data.folders.find(f => f.id === fId);
+            if (folder) {
+                folder.links.push({ id: 'h' + Date.now(), title: 'New Group', type: 'header' });
+                this.save();
+                this.render();
+            }
+        });
+
+        document.getElementById('ctxOpenAll')?.addEventListener('click', () => {
+            const fId = document.getElementById('contextFolderId').value;
+            this.closeModal('folderContextModal');
+            const folder = this.data.folders.find(f => f.id === fId);
+            if (folder && typeof chrome !== 'undefined' && chrome.tabs) {
+                folder.links.filter(l => l.type !== 'header').forEach(l => chrome.tabs.create({ url: l.url, active: false }));
+            }
+        });
+
+        document.getElementById('ctxOpenNewWin')?.addEventListener('click', () => {
+            const fId = document.getElementById('contextFolderId').value;
+            this.closeModal('folderContextModal');
+            const folder = this.data.folders.find(f => f.id === fId);
+            if (folder && typeof chrome !== 'undefined' && chrome.windows) {
+                const urls = folder.links.filter(l => l.type !== 'header').map(l => l.url);
+                if (urls.length) chrome.windows.create({ url: urls });
+            }
+        });
+
+        document.getElementById('ctxRename')?.addEventListener('click', () => {
+            const fId = document.getElementById('contextFolderId').value;
+            this.closeModal('folderContextModal');
+            const card = document.querySelector(`[data-folder-id="${fId}"]`);
+            if (card) {
+                const input = card.querySelector('.folder-title-input');
+                if (input) this._startEditTitle(input, fId);
+            }
+        });
+
+        document.getElementById('ctxDuplicate')?.addEventListener('click', () => {
+            const fId = document.getElementById('contextFolderId').value;
+            this.closeModal('folderContextModal');
+            if (!this.isPro && this.data.folders.length >= FREE_FOLDER_LIMIT) {
+                this.showPremiumModal();
+                return;
+            }
+            const folder = this.data.folders.find(f => f.id === fId);
+            if (folder) {
+                const dup = JSON.parse(JSON.stringify(folder));
+                dup.id = 'f' + Date.now();
+                dup.name += ' (Copy)';
+                dup.links.forEach(l => l.id += 'c');
+                this.data.folders.push(dup);
+                this.save();
+                this.render();
+            }
+        });
+
+        document.getElementById('ctxDelete')?.addEventListener('click', () => {
+            const fId = document.getElementById('contextFolderId').value;
+            this.closeModal('folderContextModal');
+            const folder = this.data.folders.find(f => f.id === fId);
+            if (folder) {
+                this.confirm('Delete Space', `Delete "${folder.name}" and all its links?`, 'Delete', () => this.deleteFolder(fId));
+            }
+        });
+
+        // Color Picker
+        document.querySelector('.color-picker-grid')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('color-dot')) {
+                const color = e.target.dataset.color;
+                const fId = document.getElementById('contextFolderId').value;
+                const folder = this.data.folders.find(f => f.id === fId);
+                if (folder) {
+                    folder.color = color;
+                    this.save();
+                    this.render();
+                    this.closeModal('folderContextModal');
+                }
+            }
         });
     },
 
@@ -684,27 +1267,73 @@ const App = {
                 e.stopPropagation();
                 const { linkId, folderId } = el.dataset;
                 this.confirm(
-                    'Remove Link',
-                    'Remove this link from the folder?',
+                    'Remove Item',
+                    'Remove this item from the folder?',
                     'Remove',
                     () => this.deleteLink(folderId, linkId)
                 );
                 break;
             }
-
-            case 'edit-emoji': {
+            
+            case 'edit-link': {
+                e.preventDefault();
                 e.stopPropagation();
+                const { linkId, folderId } = el.dataset;
+                this.openAddLinkModal(folderId, linkId);
+                break;
+            }
+
+            case 'open-folder-context': {
+                e.stopPropagation();
+                e.preventDefault();
                 const card = el.closest('.folder-card');
                 const folderId = card?.dataset.folderId;
-                const emojis = ['📁','💼','⭐','🎯','💡','🔥','🌍','🎮','📚','🎨','🛒','💻','🏠','✈️','🎵','🏋️','🍕','📷','🔬','🌱'];
-                const folder = this.data.folders.find(f => f.id === folderId);
-                if (!folder) return;
-                const cur = emojis.indexOf(folder.emoji);
-                folder.emoji = emojis[(cur + 1) % emojis.length];
-                this.save();
-                // Update in-place
-                const emojiEl = card.querySelector('.folder-emoji');
-                if (emojiEl) emojiEl.textContent = folder.emoji;
+                if (!folderId) return;
+                document.getElementById('contextFolderId').value = folderId;
+                this.openModal('folderContextModal');
+                break;
+            }
+
+            case 'close-tab': {
+                e.preventDefault();
+                e.stopPropagation();
+                const tabId = parseInt(el.dataset.tabId, 10);
+                if (typeof chrome !== 'undefined' && chrome.tabs) {
+                    chrome.tabs.remove(tabId, () => this.fetchTabs());
+                }
+                break;
+            }
+            
+            case 'add-tab-link': {
+                e.preventDefault();
+                e.stopPropagation();
+                const { url, title, icon } = el.dataset;
+                
+                // Show modal to select folder or just add to first one
+                if (this.data.folders.length > 0) {
+                     const folderId = this.data.folders[0].id; // For simplicity add to first folder right now. User UI could handle folder choice
+                     this._editingFolderId = folderId;
+                     this._editingLinkId = null;
+                     
+                     document.getElementById('addLinkModalTitle').textContent = 'Add Tab Link';
+                     document.getElementById('linkTitle').value = title;
+                     document.getElementById('linkUrl').value = url;
+                     document.getElementById('linkIcon').value = icon;
+                     
+                     this.openModal('addLinkModal');
+                } else {
+                    this.showToast('Create a folder first!', 'error');
+                }
+                break;
+            }
+
+            case 'restore-tab': {
+                e.preventDefault();
+                e.stopPropagation();
+                const sessionId = el.dataset.sessionId;
+                if (typeof chrome !== 'undefined' && chrome.sessions) {
+                    chrome.sessions.restore(sessionId, () => this.fetchTabs());
+                }
                 break;
             }
         }

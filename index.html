@@ -3,37 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Tab Folders</title>
+    <title>NewTabFolders</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <!-- Top Bar -->
-    <header class="topbar">
-        <div class="topbar-left">
-            <span class="logo">📁 New Tab Folders</span>
-        </div>
-        <div class="topbar-center" id="searchWrapper" style="display:none">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" id="searchInput" placeholder="Search links...">
-                <button class="search-close-btn" id="searchCloseBtn">✕</button>
+    <!-- App Layout -->
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header" style="display: flex; gap: 8px; align-items: center;">
+                <div class="search-box" style="width: 100%;">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search tabs" data-i18n-placeholder="search_tabs">
+                </div>
             </div>
-        </div>
-        <div class="topbar-right">
-            <span class="pro-badge" id="proBadge">FREE</span>
-            <button class="icon-btn" id="searchBtn" title="Search">🔍</button>
-            <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
-            <button class="upgrade-btn" id="upgradeBtn">👑 Upgrade to PRO</button>
-        </div>
-    </header>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-section-header">
+                    <h3 data-i18n="open_tabs">Open tabs</h3>
+                    <div class="sidebar-actions">
+                        <div class="dropdown-wrapper">
+                            <button class="icon-btn-small" id="sortTabsBtn" title="sort tabs" data-i18n-title="sort_recent">≡</button>
+                            <div class="dropdown-menu sort-menu" id="sortTabsMenu" style="width: 220px; right: 0; left: auto; top: 100%;">
+                                <button class="dropdown-item" data-sort="recent">
+                                    <span class="check-icon">✓</span> <span data-i18n="sort_recent">Most recent first</span>
+                                </button>
+                                <button class="dropdown-item" data-sort="position">
+                                    <span class="check-icon" style="visibility:hidden">✓</span> <span data-i18n="sort_position">By position in tab bar</span>
+                                </button>
+                                <button class="dropdown-item" data-sort="reverse">
+                                    <span class="check-icon" style="visibility:hidden">✓</span> <span data-i18n="sort_reverse">Reverse order</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="icon-btn-small" id="cleanDupesBtn" title="close duplicate tabs">🧹</button>
+                    </div>
+                </div>
+                <button class="new-tab-btn" id="newTabBtn" data-i18n="new_tab">+ New Tab</button>
+                
+                <div class="tabs-meta" id="tabsMeta">
+                    <span class="tabs-count" id="openTabsCount" data-i18n="tabs_count">0 tabs</span>
+                    <span class="tabs-window"><span data-i18n="current_window">Current window</span> <button id="saveWindowLinks" title="stash open tabs in the new folder" data-i18n-title="stash_tabs_tooltip">📥</button> <button id="closeWindowTabs" title="close windows with all tabs" data-i18n-title="close_window_tooltip">✕</button></span>
+                </div>
+                <div class="tabs-list" id="openTabsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
 
-    <!-- Main Content -->
-    <main class="container">
-        <div class="folders-grid" id="foldersGrid">
-            <!-- Populated by JS -->
-        </div>
-    </main>
+            <div class="sidebar-section closed-tabs-section">
+                <div class="sidebar-section-header" id="toggleClosedTabsBtn" style="cursor:pointer; user-select:none;">
+                    <h3 data-i18n="recently_closed">Recently closed</h3>
+                    <button class="icon-btn-small toggle-eye-btn" id="closedTabsIcon" title="hide/show" data-i18n-title="hide_show" style="display:flex; align-items:center;">
+                        <svg class="eye-open" style="display:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <svg class="eye-closed" style="display:block;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                    </button>
+                </div>
+                <div class="tabs-list hidden" id="closedTabsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Floating Sidebar Toggle -->
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title-area">
+                    <h2 data-i18n="bookmarks">Bookmarks</h2>
+                    <div class="add-space-wrapper" style="position:relative;">
+                        <button class="add-space-btn" id="addSpaceBtn">+</button>
+                        <div class="add-space-tooltip">Add new space <span class="pro-tag">Pro only</span></div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <!-- Language Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="icon-btn header-icon-btn" id="languageToggle" title="Language" data-i18n-title="language">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                        </button>
+                        <div class="dropdown-menu" id="languageMenu" style="width: 150px; right: 0;">
+                            <button class="dropdown-item" data-lang="TR">
+                                <span class="check-icon">✓</span> TR (Turkish)
+                            </button>
+                            <button class="dropdown-item" data-lang="EN">
+                                <span class="check-icon" style="visibility:hidden">✓</span> EN (English)
+                            </button>
+                            <button class="dropdown-item" data-lang="GR">
+                                <span class="check-icon" style="visibility:hidden">✓</span> GR (German)
+                            </button>
+                            <button class="dropdown-item" data-lang="FR">
+                                <span class="check-icon" style="visibility:hidden">✓</span> FR (French)
+                            </button>
+                            <button class="dropdown-item" data-lang="PT">
+                                <span class="check-icon" style="visibility:hidden">✓</span> PT (Portuguese)
+                            </button>
+                            <button class="dropdown-item" data-lang="ES">
+                                <span class="check-icon" style="visibility:hidden">✓</span> ES (Spanish)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Help Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="icon-btn header-icon-btn" id="helpToggle" title="Help" data-i18n-title="help">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </button>
+                        <div class="dropdown-menu" id="helpMenu">
+                            <a href="guide.html" class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>
+                                <span data-i18n="how_to_use">How to use NewTabFolders</span>
+                            </a>
+                            <a href="pricing.html" class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></span>
+                                <span data-i18n="upgrade_pro">Pricing</span> <span class="pro-tag">Pro</span>
+                            </a>
+                            <a href="changelog.html" class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></span>
+                                <span>What's New</span>
+                            </a>
+                            <button class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M6 16h12"></path></svg></span>
+                                Keyboard shortcuts
+                            </button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
+                                Rate NewTabFolders in Chrome Store
+                            </button>
+                            <button class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></span>
+                                Share feedback or report a bug
+                            </button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></span>
+                                Share NewTabFolders with others
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Profile Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="icon-btn header-icon-btn" id="profileToggle" title="Profile" data-i18n-title="profile">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </button>
+                        <div class="dropdown-menu" id="profileMenu">
+                            <button class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                                Login →
+                            </button>
+                            <button class="dropdown-item" id="exportBackupBtn">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
+                                <span data-i18n="export_backup">Export & backup</span>
+                            </button>
+                            
+                            <div class="pro-features-box">
+                                <span class="pro-features-title" data-i18n="pro_features">Pro features:</span>
+                                <ul>
+                                    <li>— Unlimited spaces</li>
+                                    <li>— Collapsable folders</li>
+                                    <li>— Cross-device sync</li>
+                                    <li>— Space sharing</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="icon-btn header-icon-btn" id="settingsToggle" title="Settings" data-i18n-title="settings">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                        </button>
+                        <div class="dropdown-menu" id="settingsMenu" style="width: 260px;">
+                             <button class="dropdown-item">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg></span>
+                                <span data-i18n="collapse_all">Collapse all folders</span>
+                            </button>
+                            <div class="dropdown-item toggle-item">
+                                <span data-i18n="show_unused">Show unused items</span>
+                                <div class="toggle-switch"></div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            
+                            <button class="dropdown-item" id="themeDropdownBtn">
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+                                Theme: Dark
+                            </button>
+                            <div class="dropdown-item toggle-item">
+                                <span data-i18n="show_on_new_tab">Show NewTabFolders on new tab</span>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+
+                            <div class="dropdown-item toggle-item">
+                                Show tooltips with Tab URL
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="dropdown-item toggle-item">
+                                Hide pinned tabs in the sidebar
+                                <div class="toggle-switch"></div>
+                            </div>
+                            <div class="dropdown-item toggle-item">
+                                Open bookmarks in same tab
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+
+                            <button class="dropdown-item" id="dropdownImportBtn">
+                                Import data
+                            </button>
+                            <button class="dropdown-item" id="dropdownExportBtn">
+                                Export & backup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-scroll">
+                <div class="folders-wrapper">
+                    <div class="folders-grid" id="foldersGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                
+                <div class="notes-container" id="notesContainer">
+                    <div class="sticky-note bg-note-green">
+                        If you fall asleep now, you will dream. If you study now, you will live your dream.
+                    </div>
+                    <div class="sticky-note bg-note-yellow">
+                        When you think it's too late, the truth is, it's still early.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- ===== MODALS ===== -->
 
@@ -54,14 +263,42 @@
                     <input type="text" id="linkUrl" placeholder="https://..." autocomplete="off" required>
                 </div>
                 <div class="form-group">
-                    <label for="linkIcon">Icon <span class="label-hint">(emoji)</span></label>
-                    <input type="text" id="linkIcon" placeholder="🔗" maxlength="2">
+                    <label for="linkIcon">Icon <span class="label-hint">(URL/Emoji, optional)</span></label>
+                    <input type="text" id="linkIcon" placeholder="🔗" maxlength="200">
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" data-close="addLinkModal">Cancel</button>
                     <button type="submit" class="btn-primary">Save Link</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Folder Context Menu Modal -->
+    <div class="modal-overlay" id="folderContextModal">
+        <div class="modal modal-xs context-modal">
+            <div class="color-picker-grid">
+                <button class="color-dot bg-red" data-color="red"></button>
+                <button class="color-dot bg-blue" data-color="blue"></button>
+                <button class="color-dot bg-green" data-color="green"></button>
+                <button class="color-dot bg-yellow" data-color="yellow"></button>
+                <button class="color-dot bg-purple" data-color="purple"></button>
+                <button class="color-dot bg-pink" data-color="pink"></button>
+                <button class="color-dot bg-orange" data-color="orange"></button>
+                <button class="color-dot bg-teal" data-color="teal"></button>
+            </div>
+            <div class="context-menu-list">
+                <button class="context-btn" id="ctxAddBookmark">+Add bookmark</button>
+                <button class="context-btn" id="ctxAddGroup">+Add group</button>
+                <div class="context-divider"></div>
+                <button class="context-btn" id="ctxOpenAll">Open All</button>
+                <button class="context-btn" id="ctxOpenNewWin">Open in New Win</button>
+                <div class="context-divider"></div>
+                <button class="context-btn" id="ctxRename">Rename</button>
+                <button class="context-btn" id="ctxDuplicate">Duplicate</button>
+                <button class="context-btn text-danger" id="ctxDelete">Delete</button>
+            </div>
+            <input type="hidden" id="contextFolderId" value="">
         </div>
     </div>
 
@@ -145,8 +382,105 @@
             </div>
             <div class="settings-section">
                 <h4>About</h4>
-                <p class="about-text">New Tab Folders v1.0.0<br>Made with ❤️ by <strong>METHEFOR</strong></p>
+                <p class="about-text">NewTabFolders v1.0.0<br>Made with ❤️ by <strong>METHEFOR</strong></p>
             </div>
+        </div>
+    </div>
+
+    <!-- Tutorial / Welcome Modal -->
+    <div class="modal-overlay" id="tutorialModal">
+        <div class="modal modal-md tutorial-modal">
+            <!-- Step 1: Theme -->
+            <div class="tutorial-step" id="tutorialStep1">
+                <div class="tutorial-header">
+                    <h2>Welcome to NewTabFolders!</h2>
+                    <span class="step-indicator">1 of 2</span>
+                </div>
+                <p class="tutorial-desc">Manage tabs, save bookmarks, and add sticky notes.</p>
+                <div class="tutorial-divider"></div>
+                
+                <h3 class="tutorial-subtitle">Choose your theme preference.</h3>
+                <div class="tutorial-theme-grid">
+                    <button class="tutorial-theme-btn" data-set-theme="auto">
+                        <span class="icon">⚙️</span> Auto
+                    </button>
+                    <button class="tutorial-theme-btn" data-set-theme="light">
+                        <span class="icon">☀️</span> Light
+                    </button>
+                    <button class="tutorial-theme-btn active" data-set-theme="dark">
+                        <span class="icon">🌙</span> Dark
+                    </button>
+                </div>
+                
+                <div class="tutorial-footer">
+                    <div class="tutorial-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <button class="btn-primary" id="tutorialNextBtn">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Import -->
+            <div class="tutorial-step hidden" id="tutorialStep2">
+                <div class="tutorial-header">
+                    <h2>Import Your Bookmarks</h2>
+                    <span class="step-indicator">2 of 2</span>
+                </div>
+                <p class="tutorial-desc">Bring your bookmarks from browsers or other extensions into NewTabFolders.</p>
+                
+                <div class="import-grid">
+                    <div class="import-card pro-locked">
+                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=64" alt="Chrome">
+                        <div class="import-info">
+                            <h4>Chrome Bookmarks</h4>
+                            <p>Import directly from Chrome</p>
+                        </div>
+                    </div>
+                    <div class="import-card pro-locked">
+                        <span class="import-icon">📄</span>
+                        <div class="import-info">
+                            <h4>HTML File</h4>
+                            <p>Standard browser bookmarks format</p>
+                        </div>
+                    </div>
+                    <div class="import-card pro-locked">
+                        <span class="import-icon">📊</span>
+                        <div class="import-info">
+                            <h4>CSV File</h4>
+                            <p>Comma-separated values file</p>
+                        </div>
+                    </div>
+                    <div class="import-card pro-locked">
+                        <span class="import-icon">📝</span>
+                        <div class="import-info">
+                            <h4>TXT File</h4>
+                            <p>Folder names and URLs (one per line)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="import-backup-card" id="tutorialImportBtn">
+                    <span class="import-icon bg-purple">N</span>
+                    <div class="import-info">
+                        <h4>Import NewTabFolders backup file</h4>
+                        <p>Import a previously exported JSON backup file</p>
+                    </div>
+                </div>
+
+                <div class="tutorial-footer">
+                    <div class="tutorial-dots">
+                        <span class="dot"></span>
+                        <span class="dot active"></span>
+                    </div>
+                    <div style="display:flex; gap:12px; margin-left:auto;">
+                        <button class="btn-secondary" id="tutorialPrevBtn">Previous</button>
+                        <button class="btn-primary" id="tutorialFinishBtn">Finish</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="modal-close" data-close="tutorialModal" style="position:absolute; top:12px; right:12px;">✕</button>
         </div>
     </div>
 
@@ -162,6 +496,19 @@
         </div>
     </div>
 
+    <!-- Main Workspace Context Menu -->
+    <div class="modal-overlay" id="mainContextModal">
+        <div class="modal modal-xs context-modal">
+            <div class="context-menu-list">
+                <button class="context-btn" id="ctxMainPaste">Paste</button>
+                <div class="context-divider"></div>
+                <button class="context-btn" id="ctxMainAddNote">Add Sticky Note</button>
+                <button class="context-btn" id="ctxMainAddFolder">Add folder</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/translations.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

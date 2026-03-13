@@ -1,11 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "New Tab Folders",
+  "name": "NewTabFolders",
   "short_name": "NTF",
   "version": "1.0.0",
   "description": "Organize your bookmarks with beautiful folders. Free plan available. PRO: unlimited folders, themes, cloud sync.",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs",
+    "sessions"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"
@@ -23,6 +25,6 @@
       "16": "assets/icons/icon16.png",
       "48": "assets/icons/icon48.png"
     },
-    "default_title": "New Tab Folders"
+    "default_title": "NewTabFolders"
   }
 }

@@ -1,0 +1,18 @@
+# OS junk
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE / Gemini
+.gemini/
+.agents/
+.agent/
+_agents/
+_agent/
+brain/
+
+# Backup / Old
+*.zip
+*.bak
+*.tmp
+/tmp/
