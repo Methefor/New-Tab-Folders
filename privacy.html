@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — NewTabFolders</title>
+    <meta name="description" content="Privacy Policy for NewTabFolders Chrome Extension. Learn how we handle your data.">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:     #0c0c0e;
+            --bg2:    #111116;
+            --border: #27272f;
+            --text:   #e8e8f0;
+            --muted:  #888898;
+            --gold:   #fbbf24;
+            --purple: #a855f7;
+            --green:  #22c55e;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        header {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+
+        header .inner {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        header .logo span { color: var(--text); }
+
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 14px;
+            color: var(--gold);
+        }
+
+        p { margin-bottom: 14px; color: #c8c8d8; }
+
+        ul {
+            margin: 0 0 14px 20px;
+            color: #c8c8d8;
+        }
+
+        ul li { margin-bottom: 6px; }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+
+        .badge-free  { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+        .badge-pro   { background: rgba(168,85,247,.15); color: var(--purple); border: 1px solid rgba(168,85,247,.3); }
+        .badge-never { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.25); }
+
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card p { margin-bottom: 0; font-size: 14px; }
+
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--muted);
+            font-size: 14px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="inner">
+        <a class="logo" href="landing.html">NewTab<span>Folders</span></a>
+    </div>
+</header>
+
+<main>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Last updated: April 20, 2025 &nbsp;·&nbsp; Applies to NewTabFolders Chrome Extension</p>
+
+    <p>NewTabFolders ("we", "our", or "the extension") is committed to protecting your privacy. This policy explains what data is collected, how it is used, and your rights as a user.</p>
+
+    <h2>1. Summary</h2>
+    <p>The free tier stores everything locally on your device. We do not collect analytics, show ads, or sell data. The Pro cloud sync feature optionally stores your bookmarks in Firebase Firestore, linked to your Google account — only when you explicitly sign in.</p>
+
+    <h2>2. Data We Collect</h2>
+
+    <div class="card">
+        <div class="card-title">Bookmark & Folder Data <span class="badge badge-free">FREE</span></div>
+        <p>Your folders, links, settings, and preferences are stored locally on your device using Chrome's <code>chrome.storage.local</code> API. This data never leaves your device on the free plan.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Google Account (Name, Email, Profile Photo) <span class="badge badge-pro">PRO</span></div>
+        <p>When you sign in with Google to enable cloud sync, we receive your display name, email address, and profile photo URL from Google's OAuth service. This is used only to identify your Firestore document and display your name in the UI. We do not share this with third parties.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Cloud Sync Data (Firestore) <span class="badge badge-pro">PRO</span></div>
+        <p>If you enable cloud sync, your bookmark/folder data is stored in Google Firebase Firestore under your unique user ID. This allows you to access your workspace across devices. Data is encrypted in transit (HTTPS). You can delete your cloud data at any time by signing out and using "Clear All Data" in Settings.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Weather & Location <span class="badge badge-free">FREE</span></div>
+        <p>The weather widget uses your browser's Geolocation API to obtain your approximate coordinates — only if you grant permission. Coordinates are sent to <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> (weather data) and <a href="https://nominatim.openstreetmap.org" target="_blank" rel="noopener">Nominatim / OpenStreetMap</a> (city name lookup). Neither service receives any identifying information. Your location is not stored by NewTabFolders.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Payment Information <span class="badge badge-pro">PRO</span></div>
+        <p>Payments are processed by <a href="https://www.lemonsqueezy.com" target="_blank" rel="noopener">LemonSqueezy</a>. NewTabFolders never sees or stores your credit card or billing information. Your license key is stored locally on your device to verify Pro status.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Analytics & Tracking <span class="badge badge-never">NEVER COLLECTED</span></div>
+        <p>We do not collect usage analytics, crash reports, browsing history, or any telemetry. No third-party analytics scripts are loaded.</p>
+    </div>
+
+    <h2>3. Permissions Used</h2>
+    <ul>
+        <li><strong>storage</strong> — Saves your folders, settings, and preferences locally on your device.</li>
+        <li><strong>tabs</strong> — Reads open tabs to display them in the sidebar, enables drag-to-folder, and powers the Most Visited section.</li>
+        <li><strong>sessions</strong> — Reads recently closed tabs so you can restore them from the sidebar.</li>
+        <li><strong>tabGroups</strong> — Reads your Chrome Tab Groups so you can import them as bookmark folders.</li>
+        <li><strong>bookmarks</strong> — Reads Chrome's built-in bookmarks so Pro users can import them in bulk.</li>
+        <li><strong>identity</strong> — Used only for Google Sign-In to enable cloud sync. No data is accessed beyond what you explicitly authorize.</li>
+    </ul>
+
+    <h2>4. Data Sharing</h2>
+    <p>We do not sell, rent, or share your personal data with any third party, except the service providers listed above (Firebase, LemonSqueezy, Open-Meteo, Nominatim) which are necessary for core features. Each operates under its own privacy policy.</p>
+
+    <h2>5. Data Retention & Deletion</h2>
+    <ul>
+        <li><strong>Local data:</strong> Deleted when you uninstall the extension or use "Clear All Data" in Settings.</li>
+        <li><strong>Cloud data (Pro):</strong> Deleted when you use "Clear All Data" → confirm, or by contacting us. Signing out alone does not delete cloud data.</li>
+        <li><strong>Google account tokens:</strong> Revoked immediately when you sign out.</li>
+    </ul>
+
+    <h2>6. Children's Privacy</h2>
+    <p>NewTabFolders is not directed at children under 13. We do not knowingly collect personal data from children.</p>
+
+    <h2>7. Changes to This Policy</h2>
+    <p>We may update this policy as the extension evolves. Material changes will be noted in the What's New section of the extension. Continued use after changes constitutes acceptance.</p>
+
+    <h2>8. Contact</h2>
+    <p>For privacy questions or data deletion requests, contact us at: <a href="mailto:methefor@gmail.com">methefor@gmail.com</a></p>
+    <p>Source code is available at: <a href="https://github.com/Methefor/New-Tab-Folders" target="_blank" rel="noopener">github.com/Methefor/New-Tab-Folders</a></p>
+</main>
+
+<footer>
+    &copy; 2025 NewTabFolders &nbsp;·&nbsp; Made with ♥ by METHEFOR &nbsp;·&nbsp;
+    <a href="landing.html">Home</a>
+</footer>
+
+</body>
+</html>

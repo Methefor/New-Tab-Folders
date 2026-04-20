@@ -20,20 +20,20 @@
         }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; }
         [data-theme="dark"] body { background: #0f172a; color: #f1f5f9; }
-        
-        header { 
+
+        header {
             position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; border-bottom: 1px solid var(--border);
         }
         .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: #334155; text-decoration: none; }
         .logo-box { width: 32px; height: 32px; background: #334155; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        
+
         nav { display: flex; gap: 32px; align-items: center; }
         nav a { text-decoration: none; color: var(--text-muted); font-size: 14px; font-weight: 500; transition: color 0.2s; }
         nav a:hover { color: var(--primary); }
         nav a.active { color: var(--primary); }
-        
-        .btn-chrome { 
+
+        .btn-chrome {
             background: var(--primary); color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 14px;
             display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; transition: opacity 0.2s; text-decoration: none;
         }
@@ -45,14 +45,14 @@
         .hero p { font-size: 18px; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
 
         .main-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 40px; padding: 40px 20px; }
-        
+
         .sidebar { width: 260px; position: sticky; top: 100px; height: fit-content; }
         .sidebar h4 { font-size: 12px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
         .sidebar ul { list-style: none; }
         .sidebar li { margin-bottom: 12px; }
         .sidebar a { text-decoration: none; color: var(--text-muted); font-size: 14px; transition: color 0.2s; }
         .sidebar a:hover { color: var(--primary); }
-        
+
         .content { flex: 1; max-width: 800px; }
         section { margin-bottom: 60px; scroll-margin-top: 100px; }
         section .num { display: inline-flex; width: 28px; height: 28px; background: #f1f5f9; color: #475569; border-radius: 6px; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 12px; font-size: 14px; display: flex; }
@@ -62,7 +62,7 @@
         ul.bullet-list { list-style: none; padding: 0; }
         ul.bullet-list li { margin-bottom: 8px; display: flex; gap: 10px; color: #475569; }
         ul.bullet-list li::before { content: '•'; color: var(--primary); font-weight: bold; }
-        
+
         .pro-tip { background: #fffbeb; border: 1px solid #fef3c7; border-radius: 12px; padding: 20px; margin: 24px 0; display: flex; gap: 12px; }
         .pro-tip-icon { font-size: 20px; }
         .pro-tip p { margin: 0; color: #92400e; font-size: 14px; }
@@ -87,33 +87,33 @@
         <nav>
             <a href="guide.html" class="active" data-i18n="help">Guide</a>
             <a href="pricing.html" data-i18n="upgrade_pro">Pricing</a>
-            <a href="changelog.html">Updates</a>
+            <a href="changelog.html" data-i18n="nav_updates">Updates</a>
             <a href="https://chrome.google.com/webstore" class="btn-chrome">
                 <svg class="chrome-icon" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0C8.21 0 4.83 1.35 2.26 3.6L9.16 12L12 12C12 11.2 12.33 10.45 12.92 9.92C13.5 9.4 14.28 9.11 15.11 9.11C16.5 9.11 17.65 10.1 17.84 11.41L23.96 11.41C23.99 11.19 24 10.97 24 10.75C24 4.81 19.19 0 13.25 0H12ZM4.46 5.51C2.93 7.8 2 10.55 2 13.5C2 17.06 3.32 20.32 5.5 22.8L10.36 14.39C9.9 14 9.61 13.43 9.61 12.79C9.61 11.69 10.5 10.79 11.61 10.79C12.01 10.79 12.39 10.91 12.7 11.11L19.56 5.51H19.55C17.67 3.33 14.99 2 12 2C9.01 2 6.33 3.33 4.45 5.51H4.46ZM12.79 15.11C12.79 15.75 12.39 16.32 11.77 16.63L5.51 19.55C7.39 21.73 10.07 23.06 13.06 23.06C16.05 23.06 18.73 21.73 20.61 19.55L14.49 19.55C14.19 19.55 13.88 19.46 13.62 19.29L12.79 15.11Z"/>
                 </svg>
-                Add to Chrome
+                <span data-i18n="add_to_chrome">Add to Chrome</span>
             </a>
         </nav>
     </header>
 
     <div class="hero">
         <h1 data-i18n="how_to_use">How to Use NewTabFolders</h1>
-        <p>Everything you need to organize your bookmarks and manage tabs like a pro</p>
+        <p data-i18n="guide_subtitle">Everything you need to organize your bookmarks and manage tabs like a pro</p>
     </div>
 
     <div class="main-container">
         <div class="sidebar">
-            <h4>On this page</h4>
+            <h4 data-i18n="sidebar_on_page">On this page</h4>
             <ul>
-                <li><a href="#getting-started">Getting Started</a></li>
-                <li><a href="#saving-tabs">Saving and Managing Tabs</a></li>
-                <li><a href="#folders-colors">Folders and Colors</a></li>
-                <li><a href="#groups">Organizing with Groups</a></li>
-                <li><a href="#sticky-notes">Using Sticky Notes</a></li>
-                <li><a href="#search">Search and Smart Filtering</a></li>
-                <li><a href="#performance">Performance and Bulk Actions</a></li>
-                <li><a href="#import-export">Importing and Exporting</a></li>
+                <li><a href="#getting-started" data-i18n="getting_started">Getting Started</a></li>
+                <li><a href="#saving-tabs" data-i18n="sidebar_saving_tabs">Saving and Managing Tabs</a></li>
+                <li><a href="#folders-colors" data-i18n="sidebar_folders_colors">Folders and Colors</a></li>
+                <li><a href="#groups" data-i18n="sidebar_groups">Organizing with Groups</a></li>
+                <li><a href="#sticky-notes" data-i18n="sidebar_sticky_notes">Using Sticky Notes</a></li>
+                <li><a href="#search" data-i18n="sidebar_search">Search and Smart Filtering</a></li>
+                <li><a href="#performance" data-i18n="sidebar_performance">Performance and Bulk Actions</a></li>
+                <li><a href="#import-export" data-i18n="sidebar_import_export">Importing and Exporting</a></li>
             </ul>
         </div>
 
@@ -122,81 +122,81 @@
                 <h2 data-i18n="getting_started">Getting Started</h2>
                 <div class="num">1</div>
                 <h3 data-i18n="installation">Installation</h3>
-                <p>Add NewTabFolders for newtab to Chrome by visiting the Chrome Web Store and clicking <strong>Add to Chrome</strong>. Once installed, NewTabFolders will replace your new tab page.</p>
+                <p data-i18n-html="installation_text">Add NewTabFolders for newtab to Chrome by visiting the Chrome Web Store and clicking <strong>Add to Chrome</strong>. Once installed, NewTabFolders will replace your new tab page.</p>
                 <div class="pro-tip">
                     <span class="pro-tip-icon">💡</span>
-                    <p><strong>Pro Tip:</strong> After installation, we recommend pinning NewTabFolders's icon to your browser's toolbar for easy access.</p>
+                    <p data-i18n-html="pro_tip_installation"><strong>Pro Tip:</strong> After installation, we recommend pinning NewTabFolders's icon to your browser's toolbar for easy access.</p>
                 </div>
 
                 <div class="num">2</div>
-                <h3>Opening NewTabFolders</h3>
-                <p>To launch NewTabFolders, simply open a new tab in Chrome. You should see the NewTabFolders interface instead of the usual new tab screen.</p>
+                <h3 data-i18n="opening_ntf">Opening NewTabFolders</h3>
+                <p data-i18n="opening_ntf_text">To launch NewTabFolders, simply open a new tab in Chrome. You should see the NewTabFolders interface instead of the usual new tab screen.</p>
 
                 <div class="num">3</div>
-                <h3>Quick Tour of the Interface</h3>
-                <p>On the left side, you will see an <strong>Open Tabs</strong> panel listing all the tabs currently open in your browser window. On the right side, you'll find your <strong>Folders area</strong>, where you can organize bookmarks into folders. At the top, there's a <strong>Search bar</strong> that lets you find tabs quickly.</p>
+                <h3 data-i18n="quick_tour">Quick Tour of the Interface</h3>
+                <p data-i18n-html="quick_tour_text">On the left side, you will see an <strong>Open Tabs</strong> panel listing all the tabs currently open in your browser window. On the right side, you'll find your <strong>Folders area</strong>, where you can organize bookmarks into folders. At the top, there's a <strong>Search bar</strong> that lets you find tabs quickly.</p>
             </section>
 
             <section id="saving-tabs">
-                <h2>Saving and Managing Tabs</h2>
+                <h2 data-i18n="saving_tabs_title">Saving and Managing Tabs</h2>
                 <div class="num">1</div>
-                <h3>Drag and Drop to Save</h3>
-                <p>Whenever NewTabFolders is open, your currently open sites are listed in the left sidebar. To save one, just drag its title from the Open Tabs list and drop it into a folder on the right.</p>
+                <h3 data-i18n="drag_drop_title">Drag and Drop to Save</h3>
+                <p data-i18n="drag_drop_text">Whenever NewTabFolders is open, your currently open sites are listed in the left sidebar. To save one, just drag its title from the Open Tabs list and drop it into a folder on the right.</p>
 
                 <div class="num">2</div>
-                <h3>One-Click "Stash All"</h3>
-                <p>To save a whole session of many open tabs, click the 📥 (stash) button at the top of the Open Tabs panel. This is great for when you're finishing a research session.</p>
+                <h3 data-i18n="stash_all_title">One-Click "Stash All"</h3>
+                <p data-i18n="stash_all_text">To save a whole session of many open tabs, click the 📥 (stash) button at the top of the Open Tabs panel. This is great for when you're finishing a research session.</p>
             </section>
 
             <section id="folders-colors">
-                <h2>Organizing with Folders and Colors</h2>
+                <h2 data-i18n="folders_colors_title">Organizing with Folders and Colors</h2>
                 <div class="num">1</div>
-                <h3>Creating and Naming Folders</h3>
-                <p>You can create a new folder by clicking the <strong>"Add folder"</strong> card in the main grid or dragging a tab into a blank area.</p>
+                <h3 data-i18n="creating_folders_title">Creating and Naming Folders</h3>
+                <p data-i18n-html="creating_folders_text">You can create a new folder by clicking the <strong>"Add folder"</strong> card in the main grid or dragging a tab into a blank area.</p>
 
                 <div class="num">2</div>
-                <h3>Color Coding</h3>
-                <p>Assign colors to your folders to categorize them. For instance, use blue for work, green for personal. To change color, click the folder menu and select a color picker option.</p>
+                <h3 data-i18n="color_coding_title">Color Coding</h3>
+                <p data-i18n="color_coding_text">Assign colors to your folders to categorize them. For instance, use blue for work, green for personal. To change color, click the folder menu and select a color picker option.</p>
             </section>
 
             <section id="sticky-notes">
-                <h2>Using Sticky Notes</h2>
+                <h2 data-i18n="sticky_notes_title">Using Sticky Notes</h2>
                 <div class="num">1</div>
-                <h3>Creating a Note</h3>
-                <p>Right-click inside a folder or on an empty area and select <strong>"Add Sticky Note"</strong>. A blank note will appear, ready for your thoughts.</p>
+                <h3 data-i18n="creating_note_title">Creating a Note</h3>
+                <p data-i18n-html="creating_note_text">Right-click inside a folder or on an empty area and select <strong>"Add Sticky Note"</strong>. A blank note will appear, ready for your thoughts.</p>
                 <div class="pro-tip">
                     <span class="pro-tip-icon">💡</span>
-                    <p><strong>Pro Tip:</strong> Sticky Notes are perfect for tracking to-dos or reminders related to your saved tabs.</p>
+                    <p data-i18n-html="pro_tip_sticky"><strong>Pro Tip:</strong> Sticky Notes are perfect for tracking to-dos or reminders related to your saved tabs.</p>
                 </div>
             </section>
 
             <section id="search">
-                <h2>Search and Smart Filtering</h2>
-                <p>The search bar is located at the top. Type keywords to instantly filter through open tabs, saved bookmarks, and recently closed tabs.</p>
+                <h2 data-i18n="search_title">Search and Smart Filtering</h2>
+                <p data-i18n="search_text">The search bar is located at the top. Type keywords to instantly filter through open tabs, saved bookmarks, and recently closed tabs.</p>
             </section>
 
             <section id="performance">
-                <h2>Performance and Bulk Actions</h2>
+                <h2 data-i18n="performance_title">Performance and Bulk Actions</h2>
                 <div class="num">1</div>
-                <h3>Multi-Select with SHIFT</h3>
-                <p>Hold <strong>SHIFT</strong> and click on items to select multiple tabs or bookmarks. You can then drag them all together to a different folder.</p>
+                <h3 data-i18n="multi_select_title">Multi-Select with SHIFT</h3>
+                <p data-i18n-html="multi_select_text">Hold <strong>SHIFT</strong> and click on items to select multiple tabs or bookmarks. You can then drag them all together to a different folder.</p>
             </section>
 
             <section id="import-export">
-                <h2>Importing and Exporting</h2>
-                <p>In the <strong>Settings</strong> menu, you can find options to export your data as a JSON file or import bookmarks from other extensions.</p>
+                <h2 data-i18n="import_export_title">Importing and Exporting</h2>
+                <p data-i18n-html="import_export_text">In the <strong>Settings</strong> menu, you can find options to export your data as a JSON file or import bookmarks from other extensions.</p>
             </section>
         </div>
     </div>
 
     <footer>
         <div class="footer-links">
-            <a href="#">Contact</a>
-            <a href="pricing.html">Pricing</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
+            <a href="#" data-i18n="footer_contact">Contact</a>
+            <a href="pricing.html" data-i18n="upgrade_pro">Pricing</a>
+            <a href="https://methefor.github.io/New-Tab-Folders/privacy.html" target="_blank" rel="noopener" data-i18n="footer_privacy">Privacy Policy</a>
+            <a href="#" data-i18n="footer_terms">Terms of Use</a>
         </div>
-        <div class="copy">© 2026 NewTabFolders. All rights reserved.</div>
+        <div class="copy" data-i18n="footer_copyright">© 2026 NewTabFolders. All rights reserved.</div>
     </footer>
 
 

@@ -2,13 +2,33 @@
   "manifest_version": 3,
   "name": "NewTabFolders",
   "short_name": "NTF",
-  "version": "1.0.0",
-  "description": "Organize your bookmarks with beautiful folders. Free plan available. PRO: unlimited folders, themes, cloud sync.",
+  "version": "1.6",
+  "description": "Beautiful new tab with folders, bookmarks & productivity tools. Organize tabs, import bookmarks, use themes & keyboard shortcuts.",
   "permissions": [
     "storage",
     "tabs",
-    "sessions"
+    "sessions",
+    "tabGroups",
+    "bookmarks",
+    "identity"
   ],
+  "host_permissions": [
+    "https://identitytoolkit.googleapis.com/*",
+    "https://securetoken.googleapis.com/*",
+    "https://firestore.googleapis.com/*",
+    "https://api.lemonsqueezy.com/*",
+    "https://api.open-meteo.com/*",
+    "https://nominatim.openstreetmap.org/*",
+    "https://ssl.gstatic.com/*",
+    "https://www.gstatic.com/*"
+  ],
+  "oauth2": {
+    "client_id": "402054755493-f1kkp7hb6vgqes22s4k8rkd9c0ghdiro.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
