@@ -1,88 +1,238 @@
-# 📁 New Tab Folders - Professional Bookmark Manager
+<div align="center">
 
-**Organize your digital life with a premium, tabme-inspired bookmark manager for Chrome.**
+<img src="assets/icons/icon128.png" alt="NewTabFolders" width="80" height="80">
 
-![New Tab Folders Dashboard](assets/screenshots/dashboard.png)
+# NewTabFolders
 
----
+**Your new tab. Your workspace. Your way.**
 
-## 🎯 Elevate Your Productivity
+Transform every new tab into a beautiful, high-performance productivity dashboard — with folders, bookmark management, web search, live widgets, and cloud sync.
 
-New Tab Folders transforms your "New Tab" page into a powerful workstation. Say goodbye to bookmark clutter and hello to a structured, aesthetic, and lightning-fast workspace.
-
-### ✨ Core Features
-
-*   **📂 Multi-Folder Organization**: Group your links into beautiful, color-coded cards.
-*   **🖱️ Native Drag-and-Drop**: Save open tabs instantly by dragging them from the sidebar into any folder.
-*   **🌓 Premium Themes**: Choose between Dark (Default), Light, Cyberpunk, and Nord themes.
-*   **🌍 Global Localization**: Full support for Turkish, English, German, French, Portuguese, and Spanish.
-*   **⚡ Smart Sidebar**: Search open tabs, view recently closed sessions, and manage your current window in one place.
-*   **🛡️ Privacy First**: Your data stays on your device (Free) or syncs securely (Pro).
+[![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-Install_Free-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/newtabfolders/oghlifenjhpbebcdeboejbmemelkfobe)
+[![Version](https://img.shields.io/badge/Version-1.6-success?style=for-the-badge)](https://github.com/Methefor/New-Tab-Folders/releases)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![PRO](https://img.shields.io/badge/PRO_Plan-$4.99%2Fmo-a855f7?style=for-the-badge)](https://methefor.lemonsqueezy.com)
 
 ---
 
-## 📸 Interactive Showcase
+![NewTabFolders Dashboard](store-assets/screenshots/Dashboard%20(dark).png)
 
-### 🛠️ Advanced Settings & Customization
-Take full control of your workspace with our intuitive settings menu. Import/Export backups or clear data with one click.
-![Settings Menu](assets/screenshots/settings_menu.png)
-
-### ❓ Comprehensive Documentation
-Never get lost with our built-in Guide, featuring smooth navigation and detailed installation steps.
-![Guide Page](assets/screenshots/guide_page.png)
+</div>
 
 ---
 
-## 🚀 Recent Updates (v1.54)
+## ✨ Why NewTabFolders?
 
-We've completely overhauled the interface to be cleaner and more powerful:
-- **Tabme-Style Header**: Redesigned navigation with dropdown menus for Profile, Help, and Settings.
-- **3D Workspace Depth**: Added glassmorphism and inset shadows for a premium visual feel.
-- **Improved Sidebar**: Collapse the sidebar to focus on your folders, or use the new sorting logic (Recent, Position, Reverse).
-- **Session Recovery**: Fixed bugs in Recently Closed tabs; now parses entire session windows efficiently.
+Every day you open dozens of new tabs. Most people waste that screen real estate on a blank page or a generic search box. **NewTabFolders turns it into a command center** — your bookmarks, open tabs, pinned shortcuts, live weather, web search, and personal notes, all in one beautiful view.
+
+No backend. No tracking. No bloat. Everything loads in **under 50ms**.
 
 ---
 
-## 📦 Installation
+## 🎯 Feature Overview
 
-### For Users
-1. Download the extension from the [Chrome Web Store](#) (Coming Soon).
-2. Click **Add to Chrome**.
-3. Open a new tab and start organizing!
+### 📁 Folder & Bookmark Management
+| Feature | Free | Pro |
+|---------|:----:|:---:|
+| Bookmark folders with custom colors & emojis | ✅ | ✅ |
+| Drag & drop reordering | ✅ | ✅ |
+| Folder templates (Work, Reading, Social, AI Tools) | ✅ | ✅ |
+| Starter Packs (Remote Worker, Student) | ✅ | ✅ |
+| Starter Packs (Cinema, Influencer, Gamer) | — | ✅ |
+| Unlimited folders | up to 5 | ✅ |
+| Pin folders to top | ✅ | ✅ |
+| Duplicate link warning | ✅ | ✅ |
+| Broken link checker | ✅ | ✅ |
+| Tags + notes on bookmarks | ✅ | ✅ |
 
-### For Developers (Local Load)
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/Methefor/New-Tab-Folders.git
-   ```
-2. Open `chrome://extensions/` in your browser.
-3. Enable **Developer mode** (top right).
-4. Click **Load unpacked** and select the project folder.
+### 🔄 Tab Management
+| Feature | Free | Pro |
+|---------|:----:|:---:|
+| Live sidebar with all open tabs | ✅ | ✅ |
+| Drag tabs into bookmark folders | ✅ | ✅ |
+| Stash all tabs to a new folder | ✅ | ✅ |
+| Import Chrome Tab Groups as folders | ✅ | ✅ |
+| Import Chrome Bookmarks (bulk) | — | ✅ |
+| Close duplicate tabs | ✅ | ✅ |
+| Recently closed tab recovery | ✅ | ✅ |
+
+### 🔍 Web Search Bar
+- Built-in search bar on every new tab
+- Switch between **Google, Bing, DuckDuckGo, YouTube** with one click
+- Remembers your preferred engine across sessions
+
+### 📊 Live Widgets
+- **Clock & Greeting** — Personalized time-based greeting (Good morning / Good evening)
+- **Live Weather** — Real-time temperature & conditions via your location (Open-Meteo, no API key needed)
+
+### ⚡ Quick Access & Visit Tracking
+- **📌 Pin any bookmark** to the Quick Bar for instant one-click access
+- **Most Visited** section auto-surfaces your most clicked links
+- Click counts tracked locally — no data leaves your device
+
+### 🎨 Themes & Custom Backgrounds
+| Theme | Free | Pro |
+|-------|:----:|:---:|
+| 🌑 Dark | ✅ | ✅ |
+| ☀️ Light | — | ✅ |
+| ⚡ Cyberpunk | — | ✅ |
+| 🧊 Nord | — | ✅ |
+| 🌊 Ocean | — | ✅ |
+| 🎨 Gradient backgrounds (8 presets) | — | ✅ |
+| 🖼️ Custom image background (URL) | — | ✅ |
+
+### ☁️ Cloud Sync (Pro)
+- Sign in with Google to sync your workspace across all devices
+- Real-time sync powered by Firebase Firestore — your folders are always up to date
+
+### 🌍 6 Languages
+Turkish · English · German · French · Portuguese · Spanish
+
+### 🔒 Privacy First
+- All data stored locally on your device (Free tier)
+- No external analytics, no tracking, no ads
+- Open source — inspect every line of code
+- [Privacy Policy](https://methefor.github.io/New-Tab-Folders/privacy.html)
 
 ---
 
-## 📖 How to Use
+## 📸 Screenshots
 
-1.  **Add a Folder**: Click the `+` icon on the dashboard or in the sidebar.
-2.  **Save a Link**: Use the `Click to add` button within a folder, or simply **drag an open tab** from the left sidebar.
-3.  **Customize**: Click the `Settings` icon to switch themes or the `Profile` icon to see Pro benefits.
-4.  **Right-Click Actions**: Use right-click on the dashboard empty space to quickly add folders or sticky notes.
-
----
-
-## 🔧 Tech Stack
-
-- **Frontend**: Vanilla JavaScript (ES6+) - High performance, zero bloat.
-- **Styling**: Modern CSS3 (Grid, Flexbox, Variable-based theming).
-- **API**: Chrome Extension Manifest V3 (Latest standard).
-- **Storage**: Chrome Storage sync/local & LocalStorage.
+<table>
+  <tr>
+    <td align="center"><b>Dashboard</b><br><img src="store-assets/screenshots/Dashboard%20(dark).png" alt="Dashboard" width="380"></td>
+    <td align="center"><b>Folder Templates & Starter Packs</b><br><img src="store-assets/screenshots/Add%20folders%20Premium%20modals%20theme.png" alt="Add Folders" width="380"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Settings & Themes</b><br><img src="store-assets/screenshots/Settings.png" alt="Settings" width="380"></td>
+    <td align="center"><b>What's New</b><br><img src="store-assets/screenshots/What's%20New.png" alt="What's New" width="380"></td>
+  </tr>
+</table>
 
 ---
 
-## 🤝 Contributing & Support
+## 💎 Pricing
 
-We welcome feedback and bug reports! 
-- **Report Bug**: Use the "Feedback" link in the Help menu.
-- **Project Link**: [https://github.com/Methefor/New-Tab-Folders](https://github.com/Methefor/New-Tab-Folders)
+| | **Free** | **Monthly** | **Yearly** | **Lifetime** |
+|--|:---:|:---:|:---:|:---:|
+| Price | $0 | $4.99/mo | $39.99/yr | $99.99 once |
+| Folders | Up to 5 | Unlimited | Unlimited | Unlimited |
+| Themes | Dark only | All 5 | All 5 | All 5 |
+| Custom Backgrounds | — | ✅ | ✅ | ✅ |
+| Cloud Sync | — | ✅ | ✅ | ✅ |
+| Starter Packs (Pro) | — | ✅ | ✅ | ✅ |
+| Priority Support | — | — | ✅ | ✅ |
+| Lifetime Updates | — | — | — | ✅ |
 
-Made with 💚 by **METHEFOR**
+> 💳 Secure payment via LemonSqueezy • 30-day money-back guarantee  
+> 🔑 Already purchased? Enter your license key in the Pro modal to activate.
+
+---
+
+## 🚀 Getting Started
+
+### Install from Chrome Web Store
+1. [Install NewTabFolders](https://chromewebstore.google.com/detail/newtabfolders/oghlifenjhpbebcdeboejbmemelkfobe)
+2. Open a new tab — your dashboard is ready instantly
+3. Click `+` to create your first folder
+4. Drag any open tab from the sidebar into a folder
+
+### Developer / Local Install
+```bash
+git clone https://github.com/Methefor/New-Tab-Folders.git
+```
+1. Open `chrome://extensions/`
+2. Enable **Developer mode** (top right toggle)
+3. Click **Load unpacked** → select the project folder
+4. Open a new tab ✨
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl` + `Z` | Undo last deletion |
+| `Esc` | Close any dialog |
+| `Shift` + Click | Multi-select bookmarks |
+| `Double-click` | Rename folder inline |
+| `Shift` + `Alt` + `P` | Activate 7-day Pro demo |
+
+---
+
+## 🛠️ Tech Stack
+
+```
+Frontend:   Vanilla JavaScript (ES6+) — zero dependencies, <50ms load
+Styling:    CSS3 Custom Properties — theme system, glassmorphism
+Extension:  Chrome Manifest V3 (latest standard)
+Storage:    Chrome Storage API + localStorage
+Sync:       Firebase Firestore (Pro)
+Payments:   LemonSqueezy (license key activation)
+Weather:    Open-Meteo API (free, no key required)
+```
+
+---
+
+## 📁 Project Structure
+
+```
+New-Tab-Folders/
+├── index.html          # New tab page (main app)
+├── pricing.html        # Pricing & upgrade page
+├── guide.html          # User guide
+├── changelog.html      # What's new / release notes
+├── privacy.html        # Privacy policy
+├── manifest.json       # Chrome Extension manifest v3
+├── css/
+│   └── styles.css      # Full theme system + all component styles
+├── js/
+│   ├── app.js          # Core app logic
+│   ├── background.js   # Service worker (MV3)
+│   ├── sync.js         # Firebase cloud sync (Pro)
+│   ├── info-page.js    # Guide & changelog page logic
+│   └── translations.js # i18n strings (6 languages)
+├── assets/
+│   ├── icons/          # Extension icons (16, 48, 128px)
+│   └── screenshots/    # README screenshots
+└── store-assets/       # Chrome Web Store listing assets
+```
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Firefox & Edge support
+- [ ] Mobile companion app
+- [ ] AI-powered bookmark suggestions
+- [ ] Folder sharing with team members
+- [ ] Browser history integration
+- [ ] More widget types (Calendar, To-Do, RSS)
+
+---
+
+## 🤝 Contributing
+
+Bug reports and feature suggestions are welcome!
+
+- **Report a bug**: Use the Feedback button inside the extension
+- **Feature request**: [Open an issue](https://github.com/Methefor/New-Tab-Folders/issues)
+- **Pull requests**: Fork → branch → PR
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+Made with ❤️ by [**METHEFOR**](https://github.com/Methefor)
+
+⭐ If NewTabFolders saves you time, please give it a star — it helps a lot!
+
+[![GitHub stars](https://img.shields.io/github/stars/Methefor/New-Tab-Folders?style=social)](https://github.com/Methefor/New-Tab-Folders)
+
+</div>
