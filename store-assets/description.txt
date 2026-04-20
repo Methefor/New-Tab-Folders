@@ -1,0 +1,173 @@
+==================================================
+CHROME WEB STORE — NewTabFolders v1.6
+==================================================
+
+--- SHORT DESCRIPTION (132 chars max) ---
+Transform your new tab into a beautiful productivity dashboard. Folders, web search, live widgets, themes & cloud sync.
+
+--- FULL DESCRIPTION (EN) ---
+
+NewTabFolders transforms your new tab page into a powerful, beautiful productivity dashboard. Organize bookmarks, manage tabs, search the web, and track your most-visited sites — all without leaving your new tab.
+
+✨ KEY FEATURES
+
+🔍 Web Search Bar
+• Built-in search bar on every new tab
+• Switch between Google, Bing, DuckDuckGo, and YouTube instantly
+• Remembers your preferred search engine
+
+📊 Live Widgets
+• Real-time clock with personalized greeting (Good morning / Good evening)
+• Live weather widget with temperature, conditions & city name
+• Powered by Open-Meteo — no API key required, 100% free
+
+📁 Folder Management
+• Create unlimited bookmark folders with custom colors and emojis
+• Pin important folders to the top
+• Drag & drop to reorder folders and links
+• Folder templates: Blank, Work, Reading, Social, AI Tools
+• Starter Packs: set up a full workspace in one click
+  — Remote Worker (free), Student (free)
+  — Cinema & TV, Influencer, Gamer (Pro)
+
+⚡ Quick Access Bar
+• Pin any bookmark to the Quick Bar for one-click access
+• Automatically surfaced "Most Visited" section
+• Click tracking — your most-used links always at the top
+
+🔖 Smart Bookmarks
+• Add links with custom icons (emoji or URL)
+• Add tags to categorize and filter bookmarks
+• Add private notes to any bookmark
+• Duplicate link warning to avoid clutter
+• Broken link checker — find dead links instantly
+
+🔄 Tab Management
+• See all open tabs in the sidebar
+• Drag tabs directly into bookmark folders
+• Stash all open tabs to a new folder in one click
+• Import Chrome Tab Groups as folders
+• Import Chrome Bookmarks in bulk (Pro)
+• Close duplicate tabs automatically
+• Restore recently closed tabs
+
+🎨 Themes & Custom Backgrounds
+• 5 premium themes: Dark, Light, Cyberpunk, Nord, Ocean
+• 8 gradient background presets
+• Set any image as your background with a custom URL
+• Glass effect UI adapts to custom backgrounds
+
+☁️ Cloud Sync (Pro)
+• Sign in with Google to sync across all devices
+• Real-time sync via Firebase
+• Your workspace — everywhere
+
+⌨️ Productivity
+• Undo deleted folders and links (Ctrl+Z)
+• Keyboard shortcuts panel
+• Paste a URL anywhere to instantly add it as a bookmark
+• Column count selector (2, 3, 4, or auto)
+• Compact mode for more content in less space
+
+🌍 6 Languages
+English · Turkish · German · French · Portuguese · Spanish
+
+🔒 Privacy First
+• Free tier: all data stored locally on your device
+• No external tracking, no analytics, no ads
+• Open source — inspect every line at github.com/Methefor/New-Tab-Folders
+
+---
+
+💎 FREE vs PRO
+
+FREE includes:
+✅ Unlimited links, up to 5 folders
+✅ Web search bar (all engines)
+✅ Live clock & weather widget
+✅ Quick Access Bar & Most Visited
+✅ Dark theme
+✅ Drag & drop, keyboard shortcuts
+
+PRO unlocks:
+👑 Unlimited folders
+👑 All 5 premium themes (Light, Cyberpunk, Nord, Ocean)
+👑 Custom backgrounds (8 gradients + image URL)
+👑 Cloud sync across devices
+👑 Pro Starter Packs (Cinema, Influencer, Gamer)
+👑 Import Chrome Bookmarks
+👑 Export / Import JSON backup
+
+Plans: Monthly ($4.99) · Yearly ($39.99, save 33%) · Lifetime ($99.99)
+30-day money-back guarantee. Secure payment via LemonSqueezy.
+
+---
+
+--- FULL DESCRIPTION (TR) ---
+
+NewTabFolders, yeni sekme sayfanızı güçlü ve güzel bir verimlilik panosuna dönüştürür. Yer imlerini düzenleyin, sekmeleri yönetin, web'de arama yapın ve en çok ziyaret ettiğiniz siteleri takip edin — yeni sekmenizden hiç ayrılmadan.
+
+✨ TEMEL ÖZELLİKLER
+
+🔍 Web Arama Çubuğu
+• Her yeni sekmede yerleşik arama çubuğu
+• Google, Bing, DuckDuckGo ve YouTube arasında anında geçiş
+• Tercih ettiğiniz arama motorunu hatırlar
+
+📊 Canlı Widget'lar
+• Kişiselleştirilmiş selamlama ile gerçek zamanlı saat (Günaydın / İyi akşamlar)
+• Sıcaklık, hava durumu ve şehir adı ile canlı hava widget'ı
+• Open-Meteo ile çalışır — API anahtarı gerekmez, tamamen ücretsiz
+
+📁 Klasör Yönetimi
+• Özel renkler ve emojilerle sınırsız yer imi klasörü
+• Önemli klasörleri en üste sabitleme
+• Sürükle-bırak ile yeniden sıralama
+• Klasör şablonları: Boş, İş, Okuma, Sosyal, AI Araçlar
+• Başlangıç Paketleri: tek tıkla tam bir çalışma alanı kurun
+  — Uzak Çalışan (ücretsiz), Öğrenci (ücretsiz)
+  — Sinema & TV, İçerik Üreticisi, Oyuncu (Pro)
+
+⚡ Hızlı Erişim Çubuğu
+• Tek tıkla erişim için herhangi bir yer imini sabitleyin
+• Otomatik "En Çok Ziyaret Edilenler" bölümü
+• Tıklama takibi — en çok kullandığınız linkler her zaman üstte
+
+🔖 Akıllı Yer İmleri
+• Emoji veya URL ile özel simgeli link ekleme
+• Etiket sistemi ile kategorize etme ve filtreleme
+• Her yer imine özel not ekleme
+• Yinelenen link uyarısı
+• Bozuk link kontrolü
+
+🔄 Sekme Yönetimi
+• Tüm açık sekmeleri yan panelde görme
+• Sekmeleri doğrudan klasörlere sürükleme
+• Tek tıkla tüm açık sekmeleri kaydetme
+• Chrome Sekme Gruplarını klasör olarak içe aktarma
+• Chrome Yer İmlerini toplu içe aktarma (Pro)
+• Yinelenen sekmeleri otomatik kapatma
+• Son kapatılan sekmeleri geri yükleme
+
+🎨 Temalar ve Arka Planlar
+• 5 premium tema: Koyu, Açık, Cyberpunk, Nord, Ocean
+• 8 gradyan arka plan önayarı
+• Özel URL ile istediğiniz görseli arka plan yapın
+• Özel arka planlarda cam efekti arayüzü
+
+☁️ Bulut Senkronizasyon (Pro)
+• Tüm cihazlarda senkronize etmek için Google ile giriş yapın
+• Firebase ile gerçek zamanlı senkronizasyon
+
+🌍 6 Dil
+Türkçe · İngilizce · Almanca · Fransızca · Portekizce · İspanyolca
+
+🔒 Gizlilik Önce
+• Ücretsiz tier: tüm veriler cihazınızda yerel olarak saklanır
+• Harici takip yok, analitik yok, reklam yok
+
+==================================================
+CHROME WEB STORE CATEGORIES: Productivity, Tools
+TAGS: new tab, bookmarks, tab manager, folders, productivity, web search, themes, weather, cloud sync, organization
+PRICING: Freemium
+==================================================
