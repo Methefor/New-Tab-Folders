@@ -44,7 +44,7 @@
                 
                 <div class="tabs-meta" id="tabsMeta">
                     <span class="tabs-count" id="openTabsCount" data-i18n="tabs_count">0 tabs</span>
-                    <span class="tabs-window"><span data-i18n="current_window">Current window</span> <button id="saveWindowLinks" title="stash open tabs in the new folder" data-i18n-title="stash_tabs_tooltip">📥</button> <button id="closeWindowTabs" title="close windows with all tabs" data-i18n-title="close_window_tooltip">✕</button></span>
+                    <span class="tabs-window"><span data-i18n="current_window">Current window</span> <button id="saveWindowLinks" title="stash open tabs in the new folder" data-i18n-title="stash_tabs_tooltip">📥</button> <button id="importTabGroupsBtn" data-i18n-title="import_tab_groups">🗂️</button> <button id="closeWindowTabs" title="close windows with all tabs" data-i18n-title="close_window_tooltip">✕</button></span>
                 </div>
                 <div class="tabs-list" id="openTabsList">
                     <!-- Populated by JS -->
@@ -81,6 +81,69 @@
                     </div>
                 </div>
                 <div class="header-right">
+                    <!-- Sync Status Chip -->
+                    <div id="syncStatus" class="sync-chip hidden">
+                        <span class="sync-dot" id="syncDot"></span>
+                        <span id="syncStatusText"></span>
+                    </div>
+
+                    <!-- Google Apps Launcher -->
+                    <div class="dropdown-wrapper">
+                        <button class="icon-btn header-icon-btn" id="googleAppsToggle" title="Google Apps">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown-menu google-apps-menu" id="googleAppsMenu">
+                            <a class="gapp-item" href="https://www.google.com" target="_blank">
+                                <img src="https://www.google.com/favicon.ico" alt="">
+                                <span>Search</span>
+                            </a>
+                            <a class="gapp-item" href="https://mail.google.com" target="_blank">
+                                <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="">
+                                <span>Gmail</span>
+                            </a>
+                            <a class="gapp-item" href="https://drive.google.com" target="_blank">
+                                <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png" alt="">
+                                <span>Drive</span>
+                            </a>
+                            <a class="gapp-item" href="https://www.youtube.com" target="_blank">
+                                <img src="https://www.youtube.com/favicon.ico" alt="">
+                                <span>YouTube</span>
+                            </a>
+                            <a class="gapp-item" href="https://gemini.google.com" target="_blank">
+                                <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="">
+                                <span>Gemini</span>
+                            </a>
+                            <a class="gapp-item" href="https://maps.google.com" target="_blank">
+                                <img src="https://maps.google.com/favicon.ico" alt="">
+                                <span>Maps</span>
+                            </a>
+                            <a class="gapp-item" href="https://calendar.google.com" target="_blank">
+                                <img src="https://calendar.google.com/googlecalendar/images/favicon_v2014_9.ico" alt="">
+                                <span>Calendar</span>
+                            </a>
+                            <a class="gapp-item" href="https://photos.google.com" target="_blank">
+                                <img src="https://www.gstatic.com/images/icons/material/apps/photos/2x/ic_photos_googlephotos_48dp.png" alt="">
+                                <span>Photos</span>
+                            </a>
+                            <a class="gapp-item" href="https://meet.google.com" target="_blank">
+                                <img src="https://meet.google.com/favicon.ico" alt="">
+                                <span>Meet</span>
+                            </a>
+                            <a class="gapp-item" href="https://docs.google.com" target="_blank">
+                                <img src="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" alt="">
+                                <span>Docs</span>
+                            </a>
+                            <a class="gapp-item" href="https://sheets.google.com" target="_blank">
+                                <img src="https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico" alt="">
+                                <span>Sheets</span>
+                            </a>
+                            <a class="gapp-item" href="https://translate.google.com" target="_blank">
+                                <img src="https://translate.google.com/favicon.ico" alt="">
+                                <span>Translate</span>
+                            </a>
+                        </div>
+                    </div>
+
                     <!-- Language Dropdown -->
                     <div class="dropdown-wrapper">
                         <button class="icon-btn header-icon-btn" id="languageToggle" title="Language" data-i18n-title="language">
@@ -126,9 +189,9 @@
                                 <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></span>
                                 <span>What's New</span>
                             </a>
-                            <button class="dropdown-item">
+                            <button class="dropdown-item" id="keyboardShortcutsBtn">
                                 <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M6 16h12"></path></svg></span>
-                                Keyboard shortcuts
+                                <span data-i18n="shortcuts">Keyboard shortcuts</span>
                             </button>
                             <div class="dropdown-divider"></div>
                             <button class="dropdown-item">
@@ -152,25 +215,37 @@
                         <button class="icon-btn header-icon-btn" id="profileToggle" title="Profile" data-i18n-title="profile">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </button>
-                        <div class="dropdown-menu" id="profileMenu">
-                            <button class="dropdown-item">
-                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
-                                Login →
-                            </button>
+                        <div class="dropdown-menu" id="profileMenu" style="width:240px;">
+                            <!-- Signed out state -->
+                            <div id="profileSignedOut">
+                                <div class="sync-cta-row" data-i18n="sync_sign_in_cta">Sign in to sync across devices</div>
+                                <button class="dropdown-item" id="signInBtn">
+                                    <span>🔑</span> <span data-i18n="sign_in_google">Sign in with Google</span>
+                                </button>
+                            </div>
+                            <!-- Signed in state -->
+                            <div id="profileSignedIn" class="hidden">
+                                <div class="dropdown-item user-info-row" style="cursor:default;">
+                                    <img id="userAvatar" class="user-avatar" src="" alt="">
+                                    <div>
+                                        <div id="userName" class="user-name"></div>
+                                        <div id="userEmail" class="user-email"></div>
+                                    </div>
+                                </div>
+                                <div class="sync-info-row">
+                                    <span id="lastSyncText" class="sync-time-text"></span>
+                                    <button class="sync-now-btn" id="syncNowBtn" data-i18n="sync_now">Sync Now</button>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item text-danger" id="signOutBtn">
+                                    <span>🚪</span> <span data-i18n="sign_out">Sign Out</span>
+                                </button>
+                            </div>
+                            <div class="dropdown-divider"></div>
                             <button class="dropdown-item" id="exportBackupBtn">
                                 <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
                                 <span data-i18n="export_backup">Export & backup</span>
                             </button>
-                            
-                            <div class="pro-features-box">
-                                <span class="pro-features-title" data-i18n="pro_features">Pro features:</span>
-                                <ul>
-                                    <li>— Unlimited spaces</li>
-                                    <li>— Collapsable folders</li>
-                                    <li>— Cross-device sync</li>
-                                    <li>— Space sharing</li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
 
@@ -192,7 +267,11 @@
                             
                             <button class="dropdown-item" id="themeDropdownBtn">
                                 <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
-                                Theme: Dark
+                                <span id="themeDropdownLabel">Theme: Dark</span>
+                            </button>
+                            <button class="dropdown-item" id="bgSettingsBtn">
+                                <span>🎨</span>
+                                <span>Custom Background</span>
                             </button>
                             <div class="dropdown-item toggle-item">
                                 <span data-i18n="show_on_new_tab">Show NewTabFolders on new tab</span>
@@ -214,24 +293,48 @@
                             </div>
                             <div class="dropdown-divider"></div>
 
+                            <div class="dropdown-divider"></div>
+                            <!-- Column count -->
+                            <div class="dropdown-item" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                                <span style="font-size:13px; color:var(--text-muted);" data-i18n="column_count">Column Count</span>
+                                <div class="col-selector">
+                                    <button class="col-btn active" data-cols="auto" data-i18n="col_auto">Auto</button>
+                                    <button class="col-btn" data-cols="2">2</button>
+                                    <button class="col-btn" data-cols="3">3</button>
+                                    <button class="col-btn" data-cols="4">4</button>
+                                </div>
+                            </div>
+                            <!-- Compact mode -->
+                            <div class="dropdown-item toggle-item" id="compactModeItem">
+                                <span data-i18n="compact_mode">Compact Mode</span>
+                                <div class="toggle-switch" id="compactModeToggle"></div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+
                             <button class="dropdown-item" id="dropdownImportBtn">
                                 Import data
                             </button>
+                            <button class="dropdown-item" id="importChromeBookmarksBtn">
+                                <span>🔖</span> <span data-i18n="import_chrome_bookmarks">Import Chrome Bookmarks</span>
+                            </button>
                             <button class="dropdown-item" id="dropdownExportBtn">
                                 Export & backup
+                            </button>
+                            <button class="dropdown-item" id="checkLinksBtn">
+                                <span>🔍</span> <span data-i18n="check_links">Check Broken Links</span>
                             </button>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <div class="content-scroll">
-                <div class="folders-wrapper">
-                    <div class="folders-grid" id="foldersGrid">
-                        <!-- Populated by JS -->
-                    </div>
+            <!-- Widget Bar -->
+            <div class="widget-bar" id="widgetBar">
+                <div class="widget widget-clock">
+                    <div class="widget-greeting" id="widgetGreeting"></div>
+                    <div class="widget-time" id="widgetTime">--:--</div>
+                    <div class="widget-date" id="widgetDate"></div>
                 </div>
-                
                 <div class="notes-container" id="notesContainer">
                     <div class="sticky-note bg-note-green">
                         If you fall asleep now, you will dream. If you study now, you will live your dream.
@@ -240,6 +343,66 @@
                         When you think it's too late, the truth is, it's still early.
                     </div>
                 </div>
+                <div class="widget-weather" id="widgetWeather">
+                    <div class="weather-loading">🌡️ Loading weather…</div>
+                </div>
+            </div>
+
+            <!-- Web Search Bar -->
+            <div class="web-search-section" id="webSearchSection">
+                <div class="web-search-bar">
+                    <div class="search-engine-picker" id="searchEnginePicker">
+                        <img id="searchEngineIcon" class="engine-icon" src="" alt="">
+                        <span id="searchEngineName">Google</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <div class="engine-dropdown" id="engineDropdown">
+                            <button class="engine-option" data-engine="google" data-url="https://www.google.com/search?q=" data-favicon="https://www.google.com/favicon.ico">
+                                <img src="https://www.google.com/favicon.ico" alt=""> Google
+                            </button>
+                            <button class="engine-option" data-engine="bing" data-url="https://www.bing.com/search?q=" data-favicon="https://www.bing.com/favicon.ico">
+                                <img src="https://www.bing.com/favicon.ico" alt=""> Bing
+                            </button>
+                            <button class="engine-option" data-engine="duckduckgo" data-url="https://duckduckgo.com/?q=" data-favicon="https://duckduckgo.com/favicon.ico">
+                                <img src="https://duckduckgo.com/favicon.ico" alt=""> DuckDuckGo
+                            </button>
+                            <button class="engine-option" data-engine="youtube" data-url="https://www.youtube.com/results?search_query=" data-favicon="https://www.youtube.com/favicon.ico">
+                                <img src="https://www.youtube.com/favicon.ico" alt=""> YouTube
+                            </button>
+                        </div>
+                    </div>
+                    <input type="text" id="webSearchInput" class="web-search-input" placeholder="Search the web…" autocomplete="off" autocorrect="off" spellcheck="false">
+                    <button class="web-search-btn" id="webSearchBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Access Bar -->
+            <div class="quick-bar" id="quickBar">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="content-scroll">
+                <!-- Most Visited -->
+                <div class="most-visited-section hidden" id="mostVisitedSection">
+                    <div class="most-visited-header">
+                        <span>⚡ Most Visited</span>
+                    </div>
+                    <div class="most-visited-list" id="mostVisitedList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Tag Filter Bar -->
+                <div class="tag-filter-bar" id="tagFilterBar">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="folders-wrapper">
+                    <div class="folders-grid" id="foldersGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                
             </div>
         </main>
     </div>
@@ -266,6 +429,15 @@
                     <label for="linkIcon">Icon <span class="label-hint">(URL/Emoji, optional)</span></label>
                     <input type="text" id="linkIcon" placeholder="🔗" maxlength="200">
                 </div>
+                <div class="form-group">
+                    <label for="linkTags" data-i18n="link_tags">Tags</label>
+                    <input type="text" id="linkTags" placeholder="work, design, tools" data-i18n-placeholder="tags_placeholder" autocomplete="off">
+                    <div class="tags-preview" id="tagsPreview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="linkNote" data-i18n="link_note">Note</label>
+                    <textarea id="linkNote" rows="2" placeholder="Add a note (optional)" data-i18n-placeholder="note_placeholder" style="resize:vertical; width:100%; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px 10px; color:var(--text); font-size:13px; font-family:inherit;"></textarea>
+                </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" data-close="addLinkModal">Cancel</button>
                     <button type="submit" class="btn-primary">Save Link</button>
@@ -286,6 +458,9 @@
                 <button class="color-dot bg-pink" data-color="pink"></button>
                 <button class="color-dot bg-orange" data-color="orange"></button>
                 <button class="color-dot bg-teal" data-color="teal"></button>
+                <label class="color-dot" style="background:conic-gradient(red,yellow,green,cyan,blue,magenta,red); cursor:pointer; position:relative; overflow:hidden;" title="Custom color">
+                    <input type="color" id="customColorPicker" style="opacity:0; position:absolute; inset:0; cursor:pointer; width:100%; height:100%;" value="#8b5cf6">
+                </label>
             </div>
             <div class="context-menu-list">
                 <button class="context-btn" id="ctxAddBookmark">+Add bookmark</button>
@@ -294,6 +469,7 @@
                 <button class="context-btn" id="ctxOpenAll">Open All</button>
                 <button class="context-btn" id="ctxOpenNewWin">Open in New Win</button>
                 <div class="context-divider"></div>
+                <button class="context-btn" id="ctxPin" data-i18n="pin_folder">Pin Folder</button>
                 <button class="context-btn" id="ctxRename">Rename</button>
                 <button class="context-btn" id="ctxDuplicate">Duplicate</button>
                 <button class="context-btn text-danger" id="ctxDelete">Delete</button>
@@ -321,7 +497,7 @@
                         <li>✅ Priority support</li>
                         <li>✅ No ads, forever</li>
                     </ul>
-                    <button class="pricing-btn">Subscribe Monthly</button>
+                    <button class="pricing-btn" data-checkout="https://methefor.lemonsqueezy.com/checkout/buy/4b104231-b5c0-4a7e-a9cd-a371157611d3">Subscribe Monthly</button>
                 </div>
                 <div class="pricing-card popular" data-plan="yearly">
                     <div class="popular-badge">MOST POPULAR</div>
@@ -335,7 +511,7 @@
                         <li>✅ Early access to features</li>
                         <li>✅ Export / Import data</li>
                     </ul>
-                    <button class="pricing-btn popular-btn">Subscribe Yearly</button>
+                    <button class="pricing-btn popular-btn" data-checkout="https://methefor.lemonsqueezy.com/checkout/buy/a20c7f88-d19b-4393-b33b-eaca082f7471">Subscribe Yearly</button>
                 </div>
                 <div class="pricing-card" data-plan="lifetime">
                     <h3>Lifetime</h3>
@@ -347,10 +523,18 @@
                         <li>✅ VIP support</li>
                         <li>✅ Early beta access</li>
                     </ul>
-                    <button class="pricing-btn">Buy Lifetime</button>
+                    <button class="pricing-btn" data-checkout="https://methefor.lemonsqueezy.com/checkout/buy/12535de7-7e0e-4698-9bbc-51dd0547307a">Buy Lifetime</button>
                 </div>
             </div>
-            <p class="modal-footer-text">💳 Secure payment via Stripe &nbsp;•&nbsp; 30-day money-back guarantee</p>
+            <p class="modal-footer-text">💳 Secure payment via LemonSqueezy &nbsp;•&nbsp; 30-day money-back guarantee</p>
+            <div class="license-activate-section">
+                <p class="license-label">Already purchased? Enter your license key:</p>
+                <div class="license-input-row">
+                    <input type="text" id="licenseKeyInput" class="license-input" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX">
+                    <button class="btn-primary" id="activateLicenseBtn">Activate</button>
+                </div>
+                <p id="licenseStatusMsg" class="license-status-msg"></p>
+            </div>
             <p class="demo-hint">Developer? Press <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>P</kbd> to activate 7-day PRO demo</p>
         </div>
     </div>
@@ -366,10 +550,22 @@
                 <h4>Theme</h4>
                 <div class="theme-grid" id="themeGrid">
                     <button class="theme-btn active" data-theme="dark">🌑 Dark</button>
-                    <button class="theme-btn pro-locked" data-theme="light">☀️ Light <span class="lock-tag">PRO</span></button>
-                    <button class="theme-btn pro-locked" data-theme="cyberpunk">⚡ Cyberpunk <span class="lock-tag">PRO</span></button>
-                    <button class="theme-btn pro-locked" data-theme="nord">🧊 Nord <span class="lock-tag">PRO</span></button>
+                    <button class="theme-btn pro-locked" data-theme="light" data-pro="1">☀️ Light <span class="lock-tag">PRO</span></button>
+                    <button class="theme-btn pro-locked" data-theme="cyberpunk" data-pro="1">⚡ Cyberpunk <span class="lock-tag">PRO</span></button>
+                    <button class="theme-btn pro-locked" data-theme="nord" data-pro="1">🧊 Nord <span class="lock-tag">PRO</span></button>
+                    <button class="theme-btn pro-locked" data-theme="ocean" data-pro="1">🌊 Ocean <span class="lock-tag">PRO</span></button>
                 </div>
+            </div>
+            <div class="settings-section">
+                <h4>Background</h4>
+                <div class="bg-preset-grid" id="bgPresetGrid">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="bg-url-row">
+                    <input type="text" id="bgUrlInput" class="bg-url-input" placeholder="Image URL (https://…)">
+                    <button class="btn-secondary" id="bgUrlApplyBtn">Apply</button>
+                </div>
+                <button class="btn-secondary bg-reset-btn" id="bgResetBtn">↩ Reset background</button>
             </div>
             <div class="settings-section">
                 <h4>Data</h4>
@@ -508,7 +704,178 @@
         </div>
     </div>
 
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal-overlay" id="shortcutsModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3 data-i18n="shortcuts">Keyboard Shortcuts</h3>
+                <button class="modal-close" data-close="shortcutsModal">✕</button>
+            </div>
+            <div class="shortcuts-list">
+                <div class="shortcut-row">
+                    <span class="shortcut-desc" data-i18n="shortcut_undo">Undo last deletion</span>
+                    <div class="shortcut-keys"><kbd>Ctrl</kbd>+<kbd>Z</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc" data-i18n="shortcut_close_modal">Close modal / dialog</span>
+                    <div class="shortcut-keys"><kbd>Esc</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc" data-i18n="shortcut_rename">Rename folder</span>
+                    <div class="shortcut-keys" data-i18n="shortcut_dblclick">Double click</div>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc" data-i18n="shortcut_multiselect">Multi-select items</span>
+                    <div class="shortcut-keys"><kbd>Shift</kbd> + Click</div>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc" data-i18n="shortcut_pro_demo">Activate 7-day PRO demo</span>
+                    <div class="shortcut-keys"><kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>P</kbd></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Folder Template Picker Modal -->
+    <div class="modal-overlay" id="templateModal">
+        <div class="modal modal-md">
+            <div class="modal-header">
+                <h3>Add Folders</h3>
+                <button class="modal-close" data-close="templateModal">✕</button>
+            </div>
+
+            <!-- Single folder templates -->
+            <p class="template-section-label">Single Folder</p>
+            <div class="template-grid">
+                <button class="template-card" data-template="blank">
+                    <span class="template-icon">📁</span>
+                    <span class="template-name" data-i18n="template_blank">Blank</span>
+                    <span class="template-hint" data-i18n="template_blank_hint">Empty folder</span>
+                </button>
+                <button class="template-card" data-template="work">
+                    <span class="template-icon">💼</span>
+                    <span class="template-name" data-i18n="template_work">Work</span>
+                    <span class="template-hint">Gmail, Drive, GitHub</span>
+                </button>
+                <button class="template-card" data-template="reading">
+                    <span class="template-icon">📚</span>
+                    <span class="template-name" data-i18n="template_reading">Reading</span>
+                    <span class="template-hint">Medium, HN, Reddit</span>
+                </button>
+                <button class="template-card" data-template="social">
+                    <span class="template-icon">🌐</span>
+                    <span class="template-name" data-i18n="template_social">Social</span>
+                    <span class="template-hint">X, Instagram, LinkedIn</span>
+                </button>
+                <button class="template-card" data-template="ai">
+                    <span class="template-icon">🤖</span>
+                    <span class="template-name" data-i18n="template_ai">AI Tools</span>
+                    <span class="template-hint">Claude, ChatGPT, Gemini</span>
+                </button>
+            </div>
+
+            <!-- Starter Packs -->
+            <div class="pack-section-divider">
+                <span>Starter Packs</span>
+                <span class="pack-divider-hint">Add multiple folders at once</span>
+            </div>
+            <div class="pack-grid">
+                <button class="pack-card" data-pack="remote-work">
+                    <div class="pack-top">
+                        <span class="pack-icon">🏢</span>
+                        <div class="pack-info">
+                            <div class="pack-name">Remote Worker</div>
+                            <div class="pack-desc">Communication · Projects · Dev Tools</div>
+                        </div>
+                        <span class="pack-badge free">FREE</span>
+                    </div>
+                    <div class="pack-folders">📧 Communication &bull; 📋 Projects &bull; 💻 Dev Tools</div>
+                </button>
+                <button class="pack-card" data-pack="student">
+                    <div class="pack-top">
+                        <span class="pack-icon">📚</span>
+                        <div class="pack-info">
+                            <div class="pack-name">Student</div>
+                            <div class="pack-desc">Learning · Study Tools · Research</div>
+                        </div>
+                        <span class="pack-badge free">FREE</span>
+                    </div>
+                    <div class="pack-folders">🎓 Learning &bull; 📝 Study Tools &bull; 🔬 Research</div>
+                </button>
+                <button class="pack-card pro-pack" data-pack="cinema">
+                    <div class="pack-top">
+                        <span class="pack-icon">🎬</span>
+                        <div class="pack-info">
+                            <div class="pack-name">Cinema &amp; TV</div>
+                            <div class="pack-desc">Streaming · Discover · Music</div>
+                        </div>
+                        <span class="pack-badge pro">PRO</span>
+                    </div>
+                    <div class="pack-folders">🍿 Streaming &bull; ⭐ Discover &bull; 🎵 Music</div>
+                </button>
+                <button class="pack-card pro-pack" data-pack="influencer">
+                    <div class="pack-top">
+                        <span class="pack-icon">📱</span>
+                        <div class="pack-info">
+                            <div class="pack-name">Influencer</div>
+                            <div class="pack-desc">Social Media · Design · Analytics</div>
+                        </div>
+                        <span class="pack-badge pro">PRO</span>
+                    </div>
+                    <div class="pack-folders">📢 Social Media &bull; 🎨 Design &bull; 📊 Analytics</div>
+                </button>
+                <button class="pack-card pro-pack" data-pack="gamer">
+                    <div class="pack-top">
+                        <span class="pack-icon">🎮</span>
+                        <div class="pack-info">
+                            <div class="pack-name">Gamer</div>
+                            <div class="pack-desc">Platforms · Streaming · Community</div>
+                        </div>
+                        <span class="pack-badge pro">PRO</span>
+                    </div>
+                    <div class="pack-folders">🕹️ Platforms &bull; 🔴 Streaming &bull; 👥 Community</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Chrome Bookmarks Modal -->
+    <div class="modal-overlay" id="importBookmarksModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3 data-i18n="import_chrome_bookmarks">Import Chrome Bookmarks</h3>
+                <button class="modal-close" data-close="importBookmarksModal">✕</button>
+            </div>
+            <p id="importBookmarksDesc" style="color:var(--text-muted); font-size:13px; margin-bottom:12px;"></p>
+            <div class="bookmark-preview" id="importBookmarksPreview">
+                <!-- Populated by JS -->
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" data-close="importBookmarksModal" data-i18n="cancel">Cancel</button>
+                <button type="button" class="btn-primary" id="confirmImportBookmarksBtn" data-i18n="import_bookmarks_confirm">Import All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- What's New Modal -->
+    <div class="modal-overlay" id="whatsNewModal">
+        <div class="modal modal-sm wn-modal">
+            <button class="modal-close" data-close="whatsNewModal">✕</button>
+            <div class="wn-header">
+                <div class="wn-emoji" id="whatsNewEmoji">🎉</div>
+                <h2 class="wn-title" id="whatsNewTitle"></h2>
+                <p class="wn-subtitle" id="whatsNewSubtitle"></p>
+            </div>
+            <ul class="wn-list" id="whatsNewList"></ul>
+            <div class="wn-actions">
+                <a href="changelog.html" target="_blank" class="wn-changelog-link">See full changelog →</a>
+                <button class="btn-primary wn-cta" data-close="whatsNewModal">Let's go! 🚀</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/translations.js"></script>
+    <script src="js/sync.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

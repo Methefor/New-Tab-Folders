@@ -49,6 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const key = el.dataset.i18n;
             el.textContent = t(key);
         });
+        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+            const key = el.dataset.i18nHtml;
+            el.innerHTML = t(key);
+        });
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
             const key = el.dataset.i18nPlaceholder;
             el.placeholder = t(key);
