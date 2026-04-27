@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "NewTabFolders",
   "short_name": "NTF",
-  "version": "1.6",
+  "version": "1.60",
   "description": "Beautiful new tab with folders, bookmarks & productivity tools. Organize tabs, import bookmarks, use themes & keyboard shortcuts.",
   "permissions": [
     "storage",
@@ -10,7 +10,8 @@
     "sessions",
     "tabGroups",
     "bookmarks",
-    "identity"
+    "identity",
+    "search"
   ],
   "host_permissions": [
     "https://identitytoolkit.googleapis.com/*",

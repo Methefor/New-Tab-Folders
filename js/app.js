@@ -723,73 +723,24 @@ const App = {
     },
 
     // ---------- Web Search ----------
-    SEARCH_ENGINES: {
-        google:     { name: 'Google',     url: 'https://www.google.com/search?q=',               favicon: 'https://www.google.com/favicon.ico' },
-        bing:       { name: 'Bing',       url: 'https://www.bing.com/search?q=',                 favicon: 'https://www.bing.com/favicon.ico' },
-        duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=',                     favicon: 'https://duckduckgo.com/favicon.ico' },
-        youtube:    { name: 'YouTube',    url: 'https://www.youtube.com/results?search_query=',  favicon: 'https://www.youtube.com/favicon.ico' },
-    },
-
     _initWebSearch() {
-        const input      = document.getElementById('webSearchInput');
-        const btn        = document.getElementById('webSearchBtn');
-        const picker     = document.getElementById('searchEnginePicker');
-        const dropdown   = document.getElementById('engineDropdown');
-        const iconEl     = document.getElementById('searchEngineIcon');
-        const nameEl     = document.getElementById('searchEngineName');
+        const input = document.getElementById('webSearchInput');
+        const btn   = document.getElementById('webSearchBtn');
         if (!input) return;
 
-        // Apply saved engine
-        const engine = this.data.searchEngine || 'google';
-        this._applySearchEngine(engine, iconEl, nameEl);
-
-        // Toggle engine dropdown
-        picker?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdown?.classList.toggle('open');
-        });
-
-        // Select engine
-        dropdown?.addEventListener('click', (e) => {
-            const opt = e.target.closest('.engine-option');
-            if (!opt) return;
-            const key = opt.dataset.engine;
-            this.data.searchEngine = key;
-            this.save();
-            this._applySearchEngine(key, iconEl, nameEl);
-            dropdown.classList.remove('open');
-            // Mark active
-            dropdown.querySelectorAll('.engine-option').forEach(o => o.classList.toggle('active', o.dataset.engine === key));
-            input.focus();
-        });
-
-        // Close dropdown on outside click
-        document.addEventListener('click', () => dropdown?.classList.remove('open'));
-
-        // Perform search
         const doSearch = () => {
             const q = input.value.trim();
             if (!q) return;
-            const key = this.data.searchEngine || 'google';
-            const eng = this.SEARCH_ENGINES[key] || this.SEARCH_ENGINES.google;
-            window.open(eng.url + encodeURIComponent(q), '_blank');
+            if (typeof chrome !== 'undefined' && chrome.search) {
+                chrome.search.query({ text: q, disposition: 'CURRENT_TAB' });
+            } else {
+                window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+            }
             input.value = '';
         };
 
         btn?.addEventListener('click', doSearch);
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSearch(); });
-
-        // Mark active engine in dropdown on open
-        picker?.addEventListener('click', () => {
-            const cur = this.data.searchEngine || 'google';
-            dropdown?.querySelectorAll('.engine-option').forEach(o => o.classList.toggle('active', o.dataset.engine === cur));
-        });
-    },
-
-    _applySearchEngine(key, iconEl, nameEl) {
-        const eng = this.SEARCH_ENGINES[key] || this.SEARCH_ENGINES.google;
-        if (iconEl) { iconEl.src = eng.favicon; iconEl.alt = eng.name; }
-        if (nameEl) nameEl.textContent = eng.name;
     },
 
     // ---------- Undo ----------
